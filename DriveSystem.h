@@ -7,7 +7,12 @@ class DriveSystem
 {
 public:
     DriveSystem();
-    void ();
+    void MoveForward(float percent);
+    void MoveBackwards(float percent);
+    void ZeroTurnRight(float angle);
+    void ZeroTurnLeft(float angle);
+    void ForwardTurn(float rightPercent, float leftPercent);
+    void BackwardsTurn(float rightPercent, float leftPercent);
 
 private:
     FEHMotor leftDrive;
