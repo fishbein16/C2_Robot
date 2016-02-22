@@ -1,5 +1,5 @@
-#ifndef VEX_MOTORS_H
-#define VEX_MOTORS_H
+#ifndef DRIVESYSTEM_H
+#define DRIVESYSTEM_H
 
 #include <FEHMotor.h>
 
@@ -17,4 +17,4 @@ private:
 //Making object pointer global
 extern DriveSystem* drive;
 
-#endif // EXAMPLE_H
+#endif // DRIVESYSTEM_H
