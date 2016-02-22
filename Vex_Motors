@@ -1,0 +1,20 @@
+#ifndef VEX_MOTORS_H
+#define VEX_MOTORS_H
+
+#include <FEHMotor.h>
+
+class DriveSystem
+{
+public:
+    DriveSystem();
+    void ();
+
+private:
+    FEHMotor leftDrive;
+    FEHMotor rightDrive;
+};
+
+//Making object pointer global
+extern DriveSystem* drive;
+
+#endif // EXAMPLE_H
