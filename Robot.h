@@ -43,3 +43,5 @@ private:
   
   LineFollowing lineState;
 };
+
+extern Robot* robot;
