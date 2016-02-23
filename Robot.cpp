@@ -6,6 +6,8 @@ Robot::Robot()
   middleSensor = new AnalogInputPin(FEHIO::P0_1);
   rightSensor = new AnalogInputPin(FEHIO::P0_1);
   
+  fuelSensor = new AnalogInputPin(FEHIO::P0_4);
+  
   lineState = STATE_IDLE;
 }
 
@@ -35,36 +37,29 @@ void Robot::LineFollowing()
 
     switch(lineState) {
     case STATE_STRAIGHT:
-        leftDrive.SetPercent(FULL_PERCENT);
-        rightDrive.SetPercent(FULL_PERCENT);
+        drive->ForwardTurn(FULL_PERCENT, FULL_PERCENT);
         LCD.WriteLine("STATE_STRAIGHT");
         break;
     case STATE_MINOR_LEFT:
-        leftDrive.SetPercent(MINOR_PERCENT);
-        rightDrive.SetPercent(FULL_PERCENT);
+        drive->ForwardTurn(MINOR_PERCENT, FULL_PERCENT);
         LCD.WriteLine("STATE_MIL");
         break;
     case STATE_MINOR_RIGHT:
-        leftDrive.SetPercent(FULL_PERCENT);
-        rightDrive.SetPercent(MINOR_PERCENT);
+        drive->ForwardTurn(FULL_PERCENT, MINOR_PERCENT);
         LCD.WriteLine("STATE_MIR");
         break;
     case STATE_MAJOR_LEFT:
-        leftDrive.SetPercent(MAJOR_PERCENT);
-        rightDrive.SetPercent(FULL_PERCENT);
+        drive->ForwardTurn(MAJOR_PERCENT, FULL_PERCENT);
         LCD.WriteLine("STATE_MAL");
         break;
     case STATE_MAJOR_RIGHT:
-        leftDrive.SetPercent(FULL_PERCENT);
-        rightDrive.SetPercent(MAJOR_PERCENT);
+        drive->ForwardTurn(FULL_PERCENT, MAJOR_PERCENT);
         LCD.WriteLine("STATE_MAR");
         break;
     case STATE_IDLE:
-        leftDrive.Stop();
-        rightDrive.Stop();
+        drive->Stop();
         LCD.WriteLine("STATE_IDLE");
         break;
     }
-
   }
 }
