@@ -39,8 +39,14 @@ void DriveSystem::ForwardTurn(float rightPercent, float leftPercent)
   leftDrive.SetPercent(leftPercent);
 }
 
-void DriveSytem::BackwardsTurn(float rightPercent, float leftPercent)
+void DriveSystem::BackwardsTurn(float rightPercent, float leftPercent)
 {
   rightDrive.SetPercent(-1*rightPercent);
   leftDrive.SetPercent(-1*leftPercent);
+}
+
+void DriveSystem::Stop()
+{
+  rightDrive.Stop();
+  leftDrive.Stop();
 }
