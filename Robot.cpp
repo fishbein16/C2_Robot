@@ -1,5 +1,7 @@
 #include "Robot.h"
 
+Robot* robot;
+
 Robot::Robot()
 {
   leftSensor = new AnalogInputPin(FEHIO::P0_0);
