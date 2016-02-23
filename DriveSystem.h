@@ -13,6 +13,7 @@ public:
     void ZeroTurnLeft(float angle);
     void ForwardTurn(float rightPercent, float leftPercent);
     void BackwardsTurn(float rightPercent, float leftPercent);
+    void Stop();
 
 private:
     FEHMotor leftDrive;
