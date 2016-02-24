@@ -5,8 +5,9 @@ DriveSystem* drive;
 DriveSystem::DriveSystem()
 {
   //Initialize stuff
-  leftDrive = new FEHMotor(FEHMotor::Motor1, 12.0);
   rightDrive = new FEHMotor(FEHMotor::Motor0, 12.0);
+  leftDrive = new FEHMotor(FEHMotor::Motor1, 12.0);
+  
   rightEncoder = new DigitalEncoder(FEHIO::P0_0);
   leftEncoder = new DigitalEncoder(FEHIO::P0_1);
   
