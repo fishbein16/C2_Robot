@@ -2,6 +2,7 @@
 #define ROBOT_H
 
 #include <FEHIO.h>
+#include <FEHLCD.h>
 #include "DriveSystem.h"
 
 #define LEFT_THRESHOLD              0.0
@@ -28,7 +29,9 @@ class Robot
 {
 public:
   Robot();
-  void LineFollowing(); //Stop condition as parameter?
+  void LineFollowingFunc(); //Stop condition as parameter?
+  float FuelValue();
+  float StartValue();
   
 private:
   AnalogInputPin* leftSensor;
@@ -36,12 +39,15 @@ private:
   AnalogInputPin* rightSensor;
   
   AnalogInputPin* fuelSensor;
+  AnalogInputPin* startSensor;
   
-  bool* leftSeen;
-  bool* midSeen;
-  bool* rightSeen;
+  bool leftSeen;
+  bool midSeen;
+  bool rightSeen;
   
-  LineFollowing* lineState;
+  LineFollowing lineState;
 };
 
 extern Robot* robot;
+
+#endif //ROBOT_H
