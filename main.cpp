@@ -1,26 +1,39 @@
 #include <FEHLCD.h>
 #include <FEHIO.h>
 #include <FEHUtility.h>
-#include "Example.h"
+
+#include "DriveSystem.h"
+#include "Robot.h"
 
 int main(void)
 {
-    float x,y;
+    drive->ResetEncoders();
 
-    LCD.Clear( FEHLCD::Black );
-    LCD.SetFontColor( FEHLCD::White );
+    drive->MoveBackwards(50.0);
 
-    while( true )
+    int start = TimeNow();
+
+    while(TimeNow() - start < 5);
+
+    drive->Stop();
+
+    LCD.Write("Left Encoder: ");
+    LCD.WriteLine(drive->GetLeftEncoderCounts());
+
+    LCD.Write("Right Encoder: ");
+    LCD.WriteLine(drive->GetRightEncoderCounts());
+
+    while(true)
     {
-        if( LCD.Touch(&x,&y) )
-        {
-            LCD.WriteLine( "Hello World!" );
-            Sleep( 100 );
-        }
-    }
-    //Using global pointer object
-    object->randfunction();
+        LCD.Clear();
+        LCD.Write("Fuel Light Value: ");
+        LCD.WriteLine(robot->FuelValue());
 
+        LCD.Write("Start Light Value: ");
+        LCD.WriteLine(robot->StartValue());
+
+        Sleep(1);
+    }
     return 0;
 }
 
