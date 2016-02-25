@@ -16,8 +16,8 @@ public:
     void Stop();
 
 private:
-    FEHMotor leftDrive;
-    FEHMotor rightDrive;
+    FEHMotor* leftDrive;
+    FEHMotor* rightDrive;
 };
 
 //Making object pointer global
