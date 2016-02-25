@@ -10,8 +10,8 @@ public:
     void randfunction();
 
 private:
-    int var;
-    bool var2;
+    int* var;
+    bool* var2;
 };
 
 //Making object pointer global
