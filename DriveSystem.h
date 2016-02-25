@@ -2,11 +2,15 @@
 #define DRIVESYSTEM_H
 
 #include <FEHMotor.h>
+#include <FEHIO.h>
 
 class DriveSystem
 {
 public:
     DriveSystem();
+    int GetLeftEncoderCounts();
+    int GetRightEncoderCounts();
+    void ResetEncoders();
     void MoveForward(float percent);
     void MoveBackwards(float percent);
     void ZeroTurnRight(float angle);
@@ -18,6 +22,9 @@ public:
 private:
     FEHMotor* leftDrive;
     FEHMotor* rightDrive;
+
+    DigitalEncoder* rightEncoder;
+    DigitalEncoder* leftEncoder;
 };
 
 //Making object pointer global
