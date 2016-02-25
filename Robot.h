@@ -31,17 +31,17 @@ public:
   void LineFollowing(); //Stop condition as parameter?
   
 private:
-  AnalogInputPin leftSensor;
-  AnalogInputPin middleSensor;
-  AnalogInputPin rightSensor;
+  AnalogInputPin* leftSensor;
+  AnalogInputPin* middleSensor;
+  AnalogInputPin* rightSensor;
   
-  AnalogInputPin fuelSensor;
+  AnalogInputPin* fuelSensor;
   
-  bool leftSeen;
-  bool midSeen;
-  bool rightSeen;
+  bool* leftSeen;
+  bool* midSeen;
+  bool* rightSeen;
   
-  LineFollowing lineState;
+  LineFollowing* lineState;
 };
 
 extern Robot* robot;
