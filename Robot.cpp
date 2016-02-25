@@ -1,6 +1,6 @@
 #include "Robot.h"
 
-Robot* robot;
+Robot* robot = new Robot();
 
 Robot::Robot()
 {
@@ -9,17 +9,18 @@ Robot::Robot()
   rightSensor = new AnalogInputPin(FEHIO::P0_1);
   
   fuelSensor = new AnalogInputPin(FEHIO::P0_4);
+  startSensor = new AnalogInputPin(FEHIO::P0_6);
   
   lineState = STATE_IDLE;
 }
 
-void Robot::LineFollowing()
+void Robot::LineFollowingFunc()
 {
   while(true) //Change later for some sort of condition
   {
-    leftSeen = left.Value() > LEFT_THRESHOLD;
-    rightSeen = right.Value() > MID_THRESHOLD;
-    midSeen = middle.Value() > RIGHT_THRESHOLD;
+    leftSeen = leftSensor->Value() > LEFT_THRESHOLD;
+    rightSeen = rightSensor->Value() > MID_THRESHOLD;
+    midSeen = middleSensor->Value() > RIGHT_THRESHOLD;
 
     if(midSeen && (!leftSeen && ! rightSeen)) {
         lineState = STATE_STRAIGHT;
@@ -64,4 +65,14 @@ void Robot::LineFollowing()
         break;
     }
   }
+}
+
+float Robot::FuelValue()
+{
+    return fuelSensor->Value();
+}
+
+float Robot::StartValue()
+{
+    return startSensor->Value();
 }
