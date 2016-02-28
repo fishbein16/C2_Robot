@@ -3,6 +3,7 @@
 
 #include <FEHMotor.h>
 #include <FEHIO.h>
+#include <FEHLCD.h>
 
 class DriveSystem
 {
