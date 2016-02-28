@@ -14,20 +14,19 @@ DriveSystem::DriveSystem()
   //Variables that must be initialized before running the robot
 }
 
-int DriveSystem::GetLeftEncoderCounts()
+void DriveSystem::WaitForSetpoint(int setpoint)
 {
-    return leftEncoder->Counts();
-}
-
-int DriveSystem::GetRightEncoderCounts()
-{
-    return rightEncoder->Counts();
-}
-
-void DriveSystem::ResetEncoders()
-{
-    leftEncoder->ResetCounts();
-    rightEncoder->ResetCounts();
+  int counts = 0;
+  bool oldValue = encoder.Value();
+  while(counts < setpoint)
+  {
+      bool newValue = encoder.Value();
+      if(newValue != oldValue)
+      {
+          counts++;
+          oldValue = newValue;
+      }
+  }
 }
 
 void DriveSystem::MoveForward(float percent)
@@ -48,7 +47,7 @@ void DriveSystem::ZeroTurnRight(float angle)
   int counts = 9*angle;
   leftDrive->SetPercent(-1*40.0);
   rightDrive->SetPercent(40.0);
-  while (leftEncoder->Counts() < counts);
+  WaitForSetpoint(counts);
   rightDrive->Stop();
   leftDrive->Stop();
 }
@@ -59,7 +58,7 @@ void DriveSystem::ZeroTurnLeft(float angle)
     int counts = 9*angle;
     leftDrive->SetPercent(40.0);
     rightDrive->SetPercent(-1*40.0);
-    while (leftEncoder->Counts() < counts);
+    WaitForSetpoint(counts);
     rightDrive->Stop();
     leftDrive->Stop();
 }
