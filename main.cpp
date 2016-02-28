@@ -7,15 +7,21 @@
 
 int main(void)
 {
+    while (true) {
+        LCD.Clear();
+//        LCD.WriteLine(robot->StartValue());
+//        while (!(robot->IsRed(robot->StartValue())))
+//        {
+//            LCD.WriteLine(robot->StartValue());
+//        }
+
+        while (robot->StartButton());
+
     drive->ResetEncoders();
 
-    drive->MoveBackwards(50.0);
+    drive->MoveBackwards(40.0);
 
-    int start = TimeNow();
-
-    while(TimeNow() - start < 5);
-
-    drive->Stop();
+    while((drive->GetLeftEncoderCounts() < 2500.0));
 
     LCD.Write("Left Encoder: ");
     LCD.WriteLine(drive->GetLeftEncoderCounts());
@@ -23,16 +29,43 @@ int main(void)
     LCD.Write("Right Encoder: ");
     LCD.WriteLine(drive->GetRightEncoderCounts());
 
+    drive->Stop();
+
+//    drive->ZeroTurnLeft(75.0);
+
+//    drive->MoveBackwards(40.0);
+
+//    drive->ResetEncoders();
+
+//    while((drive->GetLeftEncoderCounts() < 5200.0));
+
+//    drive->Stop();
+
+
     while(true)
     {
-        LCD.Clear();
+//        LCD.Clear();
+//        LCD.Write("Fuel Light Value: ");
+//        LCD.WriteLine(robot->FuelValue());
+
         LCD.Write("Fuel Light Value: ");
-        LCD.WriteLine(robot->FuelValue());
+        if (robot->IsLit(robot->FuelValue()))
+        {
+           if (robot->IsRed(robot->FuelValue()))
+           {
+              LCD.WriteLine("RED LIGHT MUTHA FLUCKA");
+           }
+           else
+           {
+              LCD.WriteLine("BLUE LIGHTS 4 DAYS");
+           }
+        }
 
-        LCD.Write("Start Light Value: ");
-        LCD.WriteLine(robot->StartValue());
+        while (robot->StartButton());
+    }
 
-        Sleep(1);
+
+
     }
     return 0;
 }
