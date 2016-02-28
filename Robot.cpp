@@ -8,8 +8,10 @@ Robot::Robot()
   middleSensor = new AnalogInputPin(FEHIO::P0_1);
   rightSensor = new AnalogInputPin(FEHIO::P0_1);
   
-  fuelSensor = new AnalogInputPin(FEHIO::P0_4);
+  fuelSensor = new AnalogInputPin(FEHIO::P1_4);
   startSensor = new AnalogInputPin(FEHIO::P0_6);
+
+  buttons = new ButtonBoard(FEHIO::Bank3);
   
   lineState = STATE_IDLE;
 }
@@ -67,6 +69,11 @@ void Robot::LineFollowingFunc()
   }
 }
 
+bool Robot::StartButton()
+{
+    return !(buttons->MiddlePressed());
+}
+
 float Robot::FuelValue()
 {
     return fuelSensor->Value();
@@ -75,4 +82,14 @@ float Robot::FuelValue()
 float Robot::StartValue()
 {
     return startSensor->Value();
+}
+
+bool Robot::IsRed(float light)
+{
+    return (light < RED_BLUE_THRESHOLD);
+}
+
+bool Robot::IsLit(float light)
+{
+    return (light < BLUE_NO_LIGHT_THRESHOLD);
 }
