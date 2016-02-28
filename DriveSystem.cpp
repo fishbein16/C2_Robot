@@ -8,8 +8,8 @@ DriveSystem::DriveSystem()
   rightDrive = new FEHMotor(FEHMotor::Motor0, 12.0);
   leftDrive = new FEHMotor(FEHMotor::Motor1, 12.0);
   
-  rightEncoder = new DigitalEncoder(FEHIO::P1_0);
-  leftEncoder = new DigitalEncoder(FEHIO::P1_1);
+  rightEncoder = new DigitalInputPin(FEHIO::P1_0);
+  leftEncoder = new DigitalInputPin(FEHIO::P1_1);
   
   //Variables that must be initialized before running the robot
 }
