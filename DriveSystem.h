@@ -8,9 +8,7 @@ class DriveSystem
 {
 public:
     DriveSystem();
-    int GetLeftEncoderCounts();
-    int GetRightEncoderCounts();
-    void ResetEncoders();
+    void WaitForSetpoint(int setpoint);
     void MoveForward(float percent);
     void MoveBackwards(float percent);
     void ZeroTurnRight(float angle);
@@ -23,8 +21,8 @@ private:
     FEHMotor* leftDrive;
     FEHMotor* rightDrive;
 
-    DigitalEncoder* rightEncoder;
-    DigitalEncoder* leftEncoder;
+    DigitalInputPin* rightEncoder;
+    DigitalInputPin* leftEncoder;
 };
 
 //Making object pointer global
