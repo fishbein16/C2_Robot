@@ -58,10 +58,9 @@ void DriveSystem::MoveBackwards(float percent)
 
 void DriveSystem::ZeroTurnRight(float angle)
 {
-  leftEncoder->ResetCounts();
-  int counts = 9*angle;
-  leftDrive->SetPercent(-1*40.0);
-  rightDrive->SetPercent(40.0);
+  int counts = angle/90 * 48;
+  leftDrive->SetPercent(-1*50.0);
+  rightDrive->SetPercent(50.0);
   WaitForSetpoint(counts);
   rightDrive->Stop();
   leftDrive->Stop();
@@ -69,10 +68,9 @@ void DriveSystem::ZeroTurnRight(float angle)
 
 void DriveSystem::ZeroTurnLeft(float angle)
 {
-    leftEncoder->ResetCounts();
-    int counts = 9*angle;
-    leftDrive->SetPercent(40.0);
-    rightDrive->SetPercent(-1*40.0);
+    int counts = angle/90 * 48;
+    leftDrive->SetPercent(50.0);
+    rightDrive->SetPercent(-1*50.0);
     WaitForSetpoint(counts);
     rightDrive->Stop();
     leftDrive->Stop();
