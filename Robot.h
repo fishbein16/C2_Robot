@@ -9,8 +9,8 @@
 #define MID_THRESHOLD               0.0
 #define RIGHT_THRESHOLD             0.0
 
-#define RED_BLUE_THRESHOLD          0.0
-#define BLUE_NO_LIGHT_THRESHOLD     0.0
+#define RED_BLUE_THRESHOLD          0.9
+#define BLUE_NO_LIGHT_THRESHOLD     1.3
 
 #define FULL_PERCENT                50
 #define MINOR_PERCENT               30
@@ -32,6 +32,9 @@ public:
   void LineFollowingFunc(); //Stop condition as parameter?
   float FuelValue();
   float StartValue();
+  bool StartButton();
+  bool IsRed(float light);
+  bool IsLit(float light);
   
 private:
   AnalogInputPin* leftSensor;
@@ -40,6 +43,8 @@ private:
   
   AnalogInputPin* fuelSensor;
   AnalogInputPin* startSensor;
+
+  ButtonBoard* buttons;
   
   bool leftSeen;
   bool midSeen;
