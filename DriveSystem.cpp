@@ -18,7 +18,8 @@ void DriveSystem::WaitForSetpoint(int setpoint)
 {
   int leftCounts = 0;
   int rightCounts = 0;
-  bool oldLeftValue = leftEncoder.Value();
+  bool oldLeftValue = leftEncoder->Value();
+  bool oldRightValue = rightEncoder->Value();
   while((leftCounts + rightCounts) / 2 < setpoint)
   {
     LCD.Write("Left Encoder: ");
@@ -27,14 +28,14 @@ void DriveSystem::WaitForSetpoint(int setpoint)
     LCD.Write("RightEncoder: ");
     LCD.WriteLine(rightCounts);
     
-    bool newLeftValue = leftEncoder.Value();
+    bool newLeftValue = leftEncoder->Value();
     if(newLeftValue != oldLeftValue)
     {
         leftCounts++;
         oldLeftValue = newLeftValue;
     }
     
-    bool newRightValue = rightEncoder.Value();
+    bool newRightValue = rightEncoder->Value();
     if(newRightValue != oldRightValue)
     {
       rightCounts++;
