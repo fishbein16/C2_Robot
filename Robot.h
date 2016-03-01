@@ -4,13 +4,14 @@
 #include <FEHIO.h>
 #include <FEHLCD.h>
 #include "DriveSystem.h"
+#include "ButtonSwitch.h"
 
 #define LEFT_THRESHOLD              0.0
 #define MID_THRESHOLD               0.0
 #define RIGHT_THRESHOLD             0.0
 
-#define RED_BLUE_THRESHOLD          0.9
-#define BLUE_NO_LIGHT_THRESHOLD     1.3
+#define RED_BLUE_THRESHOLD          0.0
+#define BLUE_NO_LIGHT_THRESHOLD     0.0
 
 #define FULL_PERCENT                50
 #define MINOR_PERCENT               30
@@ -32,24 +33,21 @@ public:
   void LineFollowingFunc(); //Stop condition as parameter?
   float FuelValue();
   float StartValue();
-  bool StartButton();
-  bool IsRed(float light);
-  bool IsLit(float light);
-  
+  void FlipSwitches(int left, int middle, int right);
+  void PressButton();
+
 private:
   AnalogInputPin* leftSensor;
   AnalogInputPin* middleSensor;
   AnalogInputPin* rightSensor;
-  
+
   AnalogInputPin* fuelSensor;
   AnalogInputPin* startSensor;
 
-  ButtonBoard* buttons;
-  
   bool leftSeen;
   bool midSeen;
   bool rightSeen;
-  
+
   LineFollowing lineState;
 };
 
