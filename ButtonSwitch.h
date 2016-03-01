@@ -3,10 +3,10 @@
 
 #include <FEHServo.h>
 
-#define ROT_MIN         0.0
-#define ROT_MAX         0.0
-#define FOR_BACK_MIN    0.0
-#define FOR_BACK_MAX    0.0
+#define ROT_MIN         500.0
+#define ROT_MAX         2355.0
+#define FOR_BACK_MIN    500.0
+#define FOR_BACK_MAX    2283.0
 
 #define SERVO_OUT       0.0
 #define SERVO_IN        0.0
