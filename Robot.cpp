@@ -1,3 +1,4 @@
+
 #include "Robot.h"
 
 Robot* robot = new Robot();
@@ -6,13 +7,11 @@ Robot::Robot()
 {
   leftSensor = new AnalogInputPin(FEHIO::P0_0);
   middleSensor = new AnalogInputPin(FEHIO::P0_1);
-  rightSensor = new AnalogInputPin(FEHIO::P0_1);
-  
-  fuelSensor = new AnalogInputPin(FEHIO::P1_4);
-  startSensor = new AnalogInputPin(FEHIO::P0_6);
+  rightSensor = new AnalogInputPin(FEHIO::P0_2);
 
-  buttons = new ButtonBoard(FEHIO::Bank3);
-  
+  fuelSensor = new AnalogInputPin(FEHIO::P1_1);
+  startSensor = new AnalogInputPin(FEHIO::P1_6);
+
   lineState = STATE_IDLE;
 }
 
@@ -69,11 +68,6 @@ void Robot::LineFollowingFunc()
   }
 }
 
-bool Robot::StartButton()
-{
-    return !(buttons->MiddlePressed());
-}
-
 float Robot::FuelValue()
 {
     return fuelSensor->Value();
@@ -84,12 +78,23 @@ float Robot::StartValue()
     return startSensor->Value();
 }
 
-bool Robot::IsRed(float light)
+void Robot::FlipSwitches(int left, int middle, int right)
 {
-    return (light < RED_BLUE_THRESHOLD);
+    //insert decision making code here
+    //call buttonSwitch->ToBlankSwitch()
 }
 
-bool Robot::IsLit(float light)
+void Robot::PressButton()
 {
-    return (light < BLUE_NO_LIGHT_THRESHOLD);
+    if(FuelValue() < RED_BLUE_THRESHOLD)
+    {
+        buttonSwitch->ToRedButton();
+    }
+    else
+    {
+        buttonSwitch->ToBlueButton();
+    }
+
+    //drive forward x counts
+    //do something to keep robot in place for five seconds
 }
