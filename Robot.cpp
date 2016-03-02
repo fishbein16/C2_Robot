@@ -82,6 +82,8 @@ void Robot::FlipSwitches(int left, int middle, int right)
 {
     //insert decision making code here
     //call buttonSwitch->ToBlankSwitch()
+    //1 is towards lower end
+    //2 is towards upper end
 }
 
 void Robot::PressButton()
