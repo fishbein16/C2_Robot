@@ -4,8 +4,8 @@ ButtonSwitch* buttonSwitch = new ButtonSwitch();
 
 ButtonSwitch::ButtonSwitch()
 {
-    rotationServo = new FEHServo(FEHServo::Servo0);
-    forBackServo = new FEHServo(FEHServo::Servo1);
+    rotationServo = new FEHServo(FEHServo::Servo7);
+    forBackServo = new FEHServo(FEHServo::Servo6);
 
     rotationServo->SetMax(ROT_MAX);
     rotationServo->SetMin(ROT_MIN);
@@ -22,6 +22,11 @@ void ButtonSwitch::ArmOut()
 void ButtonSwitch::ArmIn()
 {
     forBackServo->SetDegree(SERVO_IN);
+}
+
+void ButtonSwitch::ArmOutMid()
+{
+    forBackServo->SetDegree(SERVO_OUT_MID);
 }
 
 void ButtonSwitch::ToBlueButton()
@@ -47,4 +52,14 @@ void ButtonSwitch::ToLeftSwitch()
 void ButtonSwitch::ToRightSwitch()
 {
     rotationServo->SetDegree(RIGHT_SWITCH);
+}
+
+void ButtonSwitch::ToLeftMidGap()
+{
+    rotationServo->SetDegree(LEFT_MID_GAP);
+}
+
+void ButtonSwitch::ToRightMidGap()
+{
+    rotationServo->SetDegree(RIGHT_MID_GAP);
 }
