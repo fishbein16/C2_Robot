@@ -15,7 +15,7 @@ DriveSystem::DriveSystem()
   middleSensor = new AnalogInputPin(FEHIO::P0_1);
   rightSensor = new AnalogInputPin(FEHIO::P0_0);
 
-  lineState = STATE_IDLE;
+  lineState = STATE_STRAIGHT;
 }
 
 void DriveSystem::WaitForSetpointAngle(int setpoint)
@@ -136,7 +136,7 @@ void DriveSystem::LineFollowingFunc()
 {
     int majorCount = 0;
 
-    LineFollowing lastLineState = STATE_IDLE;
+    LineFollowing lastLineState = STATE_STRAIGHT;
 
     while(majorCount < 4) //Change later for some sort of condition
     {
