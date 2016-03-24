@@ -7,7 +7,7 @@
 #define SUPPLY_SERVO_MAX    2340
 
 #define PICK_UP             180.0
-#define DROP_OFF            5.0
+#define DROP_OFF            10.0
 
 class SupplyArm
 {
