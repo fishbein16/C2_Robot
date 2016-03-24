@@ -17,6 +17,8 @@ public:
   float FuelValue();
   float StartValue();
   void FlipSwitches(int left, int middle, int right);
+  bool IsRed();
+  bool IsBlue();
   void PressButton();
 
 private:
