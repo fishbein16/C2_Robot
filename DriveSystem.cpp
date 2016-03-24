@@ -9,7 +9,7 @@ DriveSystem::DriveSystem()
   leftDrive = new FEHMotor(FEHMotor::Motor1, 12.0);
 
   rightEncoder = new DigitalInputPin(FEHIO::P1_0);
-  leftEncoder = new DigitalInputPin(FEHIO::P1_1);
+//  leftEncoder = new DigitalInputPin(FEHIO::P1_1);
 
   leftSensor = new AnalogInputPin(FEHIO::P0_2);
   middleSensor = new AnalogInputPin(FEHIO::P0_1);
@@ -20,25 +20,25 @@ DriveSystem::DriveSystem()
 
 void DriveSystem::WaitForSetpointAngle(int setpoint)
 {
-  int leftCounts = 0;
+//  int leftCounts = 0;
   int rightCounts = 0;
-  bool oldLeftValue = leftEncoder->Value();
+//  bool oldLeftValue = leftEncoder->Value();
   bool oldRightValue = rightEncoder->Value();
-  while((leftCounts + rightCounts) / 2 < setpoint)
+  while(rightCounts < setpoint)
   {
-    LCD.Write("Left Encoder: ");
-    LCD.WriteLine(leftCounts);
+//    LCD.Write("Left Encoder: ");
+//    LCD.WriteLine(leftCounts);
 
     LCD.Write("RightEncoder: ");
     LCD.WriteLine(rightCounts);
 
-    bool newLeftValue = leftEncoder->Value();
+/*    bool newLeftValue = leftEncoder->Value();
     if(newLeftValue != oldLeftValue)
     {
         leftCounts++;
         oldLeftValue = newLeftValue;
     }
-
+*/
     bool newRightValue = rightEncoder->Value();
     if(newRightValue != oldRightValue)
     {
@@ -50,28 +50,28 @@ void DriveSystem::WaitForSetpointAngle(int setpoint)
 
 void DriveSystem::WaitForSetpointInch(double setpoint)
 {
-    int leftCounts = 0;
+//    int leftCounts = 0;
     int rightCounts = 0;
-    bool oldLeftValue = leftEncoder->Value();
+//    bool oldLeftValue = leftEncoder->Value();
     bool oldRightValue = rightEncoder->Value();
 
     int encoderSetpoint = setpoint * INCH_COUNT_CONVERSION;
 
-    while((leftCounts + rightCounts) / 2 < encoderSetpoint)
+    while(rightCounts < encoderSetpoint)
     {
-      LCD.Write("Left Encoder: ");
-      LCD.WriteLine(leftCounts);
+//      LCD.Write("Left Encoder: ");
+//      LCD.WriteLine(leftCounts);
 
       LCD.Write("RightEncoder: ");
       LCD.WriteLine(rightCounts);
 
-      bool newLeftValue = leftEncoder->Value();
+/*      bool newLeftValue = leftEncoder->Value();
       if(newLeftValue != oldLeftValue)
       {
           leftCounts++;
           oldLeftValue = newLeftValue;
       }
-
+*/
       bool newRightValue = rightEncoder->Value();
       if(newRightValue != oldRightValue)
       {
