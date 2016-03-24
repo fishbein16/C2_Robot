@@ -4,7 +4,7 @@ SupplyArm* supplyArm = new SupplyArm();
 
 SupplyArm::SupplyArm()
 {
-    supplyServo = new FEHServo(FEHServo::Servo5);
+    supplyServo = new FEHServo(FEHServo::Servo4);
 
     supplyServo->SetMin(SUPPLY_SERVO_MIN);
     supplyServo->SetMax(SUPPLY_SERVO_MAX);

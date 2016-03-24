@@ -8,8 +8,8 @@ DriveSystem::DriveSystem()
   rightDrive = new FEHMotor(FEHMotor::Motor0, 12.0);
   leftDrive = new FEHMotor(FEHMotor::Motor1, 12.0);
 
-  rightEncoder = new DigitalInputPin(FEHIO::P1_0);
-//  leftEncoder = new DigitalInputPin(FEHIO::P1_1);
+//  rightEncoder = new DigitalInputPin(FEHIO::P1_0);
+  leftEncoder = new DigitalInputPin(FEHIO::P1_2);
 
   leftSensor = new AnalogInputPin(FEHIO::P0_2);
   middleSensor = new AnalogInputPin(FEHIO::P0_1);
@@ -20,77 +20,77 @@ DriveSystem::DriveSystem()
 
 void DriveSystem::WaitForSetpointAngle(int setpoint)
 {
-//  int leftCounts = 0;
-  int rightCounts = 0;
-//  bool oldLeftValue = leftEncoder->Value();
-  bool oldRightValue = rightEncoder->Value();
-  while(rightCounts < setpoint)
+  int leftCounts = 0;
+//  int rightCounts = 0;
+  bool oldLeftValue = leftEncoder->Value();
+//  bool oldRightValue = rightEncoder->Value();
+  while(leftCounts < setpoint)
   {
-//    LCD.Write("Left Encoder: ");
-//    LCD.WriteLine(leftCounts);
+    LCD.Write("Left Encoder: ");
+    LCD.WriteLine(leftCounts);
 
-    LCD.Write("RightEncoder: ");
-    LCD.WriteLine(rightCounts);
+//    LCD.Write("RightEncoder: ");
+//    LCD.WriteLine(rightCounts);
 
-/*    bool newLeftValue = leftEncoder->Value();
+    bool newLeftValue = leftEncoder->Value();
     if(newLeftValue != oldLeftValue)
     {
         leftCounts++;
         oldLeftValue = newLeftValue;
     }
-*/
+/*
     bool newRightValue = rightEncoder->Value();
     if(newRightValue != oldRightValue)
     {
       rightCounts++;
       oldRightValue = newRightValue;
     }
-  }
+  */}
 }
 
-void DriveSystem::WaitForSetpointInch(double setpoint)
+void DriveSystem::WaitForSetpointInch(float setpoint)
 {
-//    int leftCounts = 0;
-    int rightCounts = 0;
-//    bool oldLeftValue = leftEncoder->Value();
-    bool oldRightValue = rightEncoder->Value();
+    int leftCounts = 0;
+//    int rightCounts = 0;
+    bool oldLeftValue = leftEncoder->Value();
+//    bool oldRightValue = rightEncoder->Value();
 
     int encoderSetpoint = setpoint * INCH_COUNT_CONVERSION;
 
-    while(rightCounts < encoderSetpoint)
+    while(leftCounts < encoderSetpoint)
     {
-//      LCD.Write("Left Encoder: ");
-//      LCD.WriteLine(leftCounts);
+      LCD.Write("Left Encoder: ");
+      LCD.WriteLine(leftCounts);
 
-      LCD.Write("RightEncoder: ");
-      LCD.WriteLine(rightCounts);
+//      LCD.Write("RightEncoder: ");
+ //     LCD.WriteLine(rightCounts);
 
-/*      bool newLeftValue = leftEncoder->Value();
+      bool newLeftValue = leftEncoder->Value();
       if(newLeftValue != oldLeftValue)
       {
           leftCounts++;
           oldLeftValue = newLeftValue;
       }
-*/
-      bool newRightValue = rightEncoder->Value();
+
+/*      bool newRightValue = rightEncoder->Value();
       if(newRightValue != oldRightValue)
       {
         rightCounts++;
         oldRightValue = newRightValue;
       }
-    }
+  */  }
 }
 
 void DriveSystem::MoveForward(float percent)
 {
   leftDrive->SetPercent(-1 * percent);
-  rightDrive->SetPercent(-0.9 * percent);
+  rightDrive->SetPercent(-1 * percent);
 }
 
 void DriveSystem::MoveBackwards(float percent)
 {
   leftDrive->SetPercent(percent);
-  rightDrive->SetPercent(percent * 0.9);
+  rightDrive->SetPercent(percent);
 }
 
 void DriveSystem::ZeroTurnClockwise(float angle)
@@ -221,7 +221,7 @@ void DriveSystem::LineFollowingBack()
 
     while(!startFollowing)
     {
-        MoveBackwards(50);
+        MoveBackwards(30);
         rightSeen = rightSensor->Value() < RIGHT_THRESHOLD;
         if(lastRight && !rightSeen)
         {

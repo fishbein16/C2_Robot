@@ -9,13 +9,13 @@
 
 #define LEFT_THRESHOLD              0.500
 #define MID_THRESHOLD               0.160
-#define RIGHT_THRESHOLD             0.250
+#define RIGHT_THRESHOLD             0.500
 
-#define FULL_PERCENT                30
-#define FULL_RIGHT_PERCENT          10
-#define FULL_RIGHT_NOT_STRAIGHT     30
-#define MINOR_PERCENT               -5
-#define MAJOR_PERCENT               -30
+#define FULL_LEFT_PERCENT           50
+#define FULL_RIGHT_PERCENT          20
+#define FULL_RIGHT_NOT_STRAIGHT     50
+#define MINOR_PERCENT               -10
+#define MAJOR_PERCENT               -50
 
 #define INCH_COUNT_CONVERSION       48/10.5
 
@@ -33,7 +33,7 @@ class DriveSystem
 public:
     DriveSystem();
     void WaitForSetpointAngle(int setpoint);
-    void WaitForSetpointInch(double setpoint);
+    void WaitForSetpointInch(float setpoint);
     void MoveForward(float percent);
     void MoveBackwards(float percent);
     void ZeroTurnClockwise(float angle);

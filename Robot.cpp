@@ -26,6 +26,8 @@ float Robot::StartValue()
 
 void Robot::FlipSwitches(int left, int middle, int right)
 {
+    //1 is towards bottom level
+    //Otherwise, towards upper level
     bool againstWall = true;
     if(left == 1)
     {
@@ -156,15 +158,31 @@ void Robot::PressButton()
     if(IsRed())
     {
         buttonSwitch->ToRedButton();
+        Sleep(0.2);
     }
     else
     {
+        drive->MoveForward(30);
+        drive->WaitForSetpointInch(0.2);
+        drive->Stop();
+        Sleep(0.25);
         buttonSwitch->ToBlueButton();
+        Sleep(0.5);
     }
 
     drive->MoveBackwards(20);
 
-    Sleep(5.25);
+    Sleep(0.75);
 
     drive->Stop();
+
+    Sleep(5.00);
+
+    drive->MoveForward(30);
+
+    drive->WaitForSetpointInch(1);
+
+    drive->Stop();
+
+    buttonSwitch->ToRedButton();
 }
