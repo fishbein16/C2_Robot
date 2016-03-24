@@ -134,11 +134,13 @@ void DriveSystem::Stop()
 
 void DriveSystem::LineFollowingFunc()
 {
-    int majorCount = 0;
+    bool timeOut = false;
+
+    float start = 0;
 
     LineFollowing lastLineState = STATE_STRAIGHT;
 
-    while(majorCount < 4) //Change later for some sort of condition
+    while(!timeOut) //Change later for some sort of condition
     {
         leftSeen = leftSensor->Value() < LEFT_THRESHOLD;
         rightSeen = rightSensor->Value() < RIGHT_THRESHOLD;
@@ -168,33 +170,42 @@ void DriveSystem::LineFollowingFunc()
         switch(lineState)
         {
         case STATE_STRAIGHT:
-            MoveForward(FULL_PERCENT);
+            ForwardTurn(FULL_LEFT_PERCENT, FULL_RIGHT_PERCENT);
             LCD.WriteLine("STATE_STRAIGHT");
+            if(start != 0 && TimeNow() - start > 1.5)
+            {
+                timeOut = true;
+            }
             break;
         case STATE_MINOR_LEFT:
-            ForwardTurn(MINOR_PERCENT, FULL_PERCENT);
+            ForwardTurn(MINOR_PERCENT, FULL_RIGHT_NOT_STRAIGHT);
             LCD.WriteLine("STATE_MIL");
             break;
         case STATE_MINOR_RIGHT:
-            ForwardTurn(FULL_PERCENT, MINOR_PERCENT);
+            ForwardTurn(FULL_LEFT_PERCENT, MINOR_PERCENT);
             LCD.WriteLine("STATE_MIR");
             break;
         case STATE_MAJOR_LEFT:
-            ForwardTurn(MAJOR_PERCENT, FULL_PERCENT);
+            ForwardTurn(MAJOR_PERCENT, FULL_RIGHT_NOT_STRAIGHT);
             LCD.WriteLine("STATE_MAL");
             break;
         case STATE_MAJOR_RIGHT:
-            ForwardTurn(FULL_PERCENT, MAJOR_PERCENT);
+            ForwardTurn(FULL_LEFT_PERCENT, MAJOR_PERCENT);
             LCD.WriteLine("STATE_MAR");
-            if(lastLineState != lineState)
-            {
-                majorCount++;
-            }
             break;
         case STATE_IDLE:
             Stop();
             LCD.WriteLine("STATE_IDLE");
             break;
+        }
+
+        if(lineState == STATE_STRAIGHT && lastLineState != lineState)
+        {
+            start = TimeNow();
+        }
+        else if(lineState != STATE_STRAIGHT)
+        {
+            start = 0;
         }
 
         lastLineState = lineState;
