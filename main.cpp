@@ -9,20 +9,17 @@
 #include "ButtonSwitch.h"
 #include "SupplyArm.h"
 
-#define SUP_X_TARGET            28.25
-#define X_TARGET                30.0
-#define Y_TARGET                64.1
-
-#define FINAL_X_TARGET          6.200
-#define POST_RAMP_Y_DOWN        21.500
-
-#define YELLOW_BLUE_THRESHOLD   1.25
-
 int main(void)
 {
     using namespace std;
 
+    ButtonBoard button(FEHIO::Bank3);
+
     RPS.InitializeTouchMenu();
+
+    float supXTarget, supYTarget, rampXMin, rampXMax, xTargetFuel, yTargetFuel, finalXTarget, postRampYDown;
+
+    robot->SelectRPSRegionVariables(&supXTarget, &xTargetFuel, &yTargetFuel, &finalXTarget, &postRampYDown);
 
     buttonSwitch->ArmIn();
 
@@ -31,16 +28,47 @@ int main(void)
     float start = TimeNow();
     while(TimeNow() - start < 1.0);
 
-    buttonSwitch->ToRedButton();
+    buttonSwitch->NeutralButton();
+
+//    int count = 0;
+//    while(count < 5)
+//    {
+//        if(button.RightPressed())
+//        {
+//            switch(count)
+//            {
+//            case 0:
+//                supXTarget = RPS.X();
+//                supYTarget = RPS.Y();
+//                break;
+//            case 1:
+//                rampXMin = RPS.X();
+//                break;
+//            case 2:
+//                rampXMax = RPS.X();
+//                break;
+//            case 3:
+//                xTargetFuel = RPS.X();
+//                yTargetFuel = RPS.Y();
+//                break;
+//            case 4:
+//                postRampYDown = RPS.Y();
+//                finalXTarget = RPS.X();
+//                break;
+//            }
+//            count++;
+//            while(button.RightPressed());
+//        }
+//    }
 
     while(!robot->Start());
 
     ///////////////////////////////
     ///////Start to Supplies///////
     ///////////////////////////////
-    drive->MoveBackwards(70);
+    drive->MoveBackwards(50);
 
-    drive->WaitForSetpointInch(16.5);
+    drive->WaitForSetpointInch(16.5); //12.5
 
     drive->Stop();
 
@@ -63,15 +91,15 @@ int main(void)
         Sleep(0.25);
     }
 
-    drive->MoveBackwards(70);
+    drive->MoveBackwards(50);
 
-    drive->WaitForSetpointInch(SUP_X_TARGET - RPS.X());
+    drive->WaitForSetpointInch(supXTarget - RPS.X());
 
     drive->Stop();
 
-    if(RPS.X() < SUP_X_TARGET - .1)
+    if(RPS.X() < supXTarget - .1)
     {
-        while(RPS.X() < SUP_X_TARGET - .1 /*|| RPS.X() > SUP_X_TARGET*/)
+        while(RPS.X() < supXTarget - .1)
         {
             drive->MoveBackwards(25);
             Sleep(0.05);
@@ -79,9 +107,9 @@ int main(void)
             Sleep(0.1);
         }
     }
-    else if(RPS.X() > SUP_X_TARGET)
+    else if(RPS.X() > supXTarget)
     {
-        while(RPS.X() > SUP_X_TARGET)
+        while(RPS.X() > supXTarget)
         {
             drive->MoveForward(25);
             Sleep(0.05);
@@ -92,7 +120,7 @@ int main(void)
 
     Sleep(0.25);
 
-    drive->ZeroTurnCounter(80);
+    drive->ZeroTurnCounter(90);
 
     drive->Stop();
 
@@ -114,9 +142,9 @@ int main(void)
         }
     }
 
-    drive->MoveForward(70);
+    drive->MoveForward(50);
 
-    drive->WaitForSetpointInch(RPS.Y() - 11.5 - 6);
+    drive->WaitForSetpointInch(RPS.Y() - /*supYTarget*/11.5 - 6);
 
     drive->Stop();
 
@@ -124,14 +152,14 @@ int main(void)
 
     float angle;
 
-    if(RPS.X() > SUP_X_TARGET)
+    if(RPS.X() > supXTarget)
     {
-        angle = atan2(RPS.Y() - 11.5, RPS.X() - SUP_X_TARGET);
+        angle = atan2(RPS.Y() - supYTarget, RPS.X() - supXTarget);
         angle = 90 - angle;
     }
     else
     {
-        angle = atan2(RPS.Y() - 11.5, SUP_X_TARGET - RPS.X());
+        angle = atan2(RPS.Y() - /*supYTarget*/11.5, supXTarget - RPS.X());
         angle = 90 + angle;
     }
 
@@ -151,9 +179,9 @@ int main(void)
         }
     }
 
-    drive->MoveForward(60);
+    drive->MoveForward(50);
 
-    drive->WaitForSetpointInch(RPS.Y() - 11.5);
+    drive->WaitForSetpointInch(RPS.Y() - /*supYTarget*/11.5);
 
     drive->Stop();
 
@@ -180,7 +208,7 @@ int main(void)
         Sleep(0.25);
     }
 
-    drive->MoveBackwards(60);
+    drive->MoveBackwards(50);
 
     drive->WaitForSetpointInch(13);
 
@@ -199,7 +227,7 @@ int main(void)
         Sleep(0.25);
     }
 
-    if(RPS.X() < X_TARGET - 1.7)
+    if(RPS.X() < /*rampXMin*/xTargetFuel - 1.7)
     {
         drive->ZeroTurnClockwise(RPS.Heading());
 
@@ -220,7 +248,7 @@ int main(void)
 
         drive->MoveBackwards(30);
 
-        drive->WaitForSetpointInch(X_TARGET - RPS.X());
+        drive->WaitForSetpointInch(/*(rampXMin + rampXMax) / 2*/xTargetFuel - RPS.X());
 
         drive->Stop();
 
@@ -243,7 +271,7 @@ int main(void)
             Sleep(0.25);
         }
     }
-    else if(RPS.X() > X_TARGET)
+    else if(RPS.X() > /*rampXMax*/xTargetFuel)
     {
         drive->ZeroTurnClockwise(RPS.Heading());
 
@@ -264,7 +292,7 @@ int main(void)
 
         drive->MoveForward(30);
 
-        drive->WaitForSetpointInch(RPS.X() - X_TARGET);
+        drive->WaitForSetpointInch(RPS.X() - /*(rampXMin + rampXMax) / 2*/xTargetFuel);
 
         drive->Stop();
 
@@ -315,72 +343,83 @@ int main(void)
     ///////Upper to Buttons///////
     //////////////////////////////
 
-//    drive->MoveBackwards(50);
-
-//    drive->WaitForSetpointInch(Y_TARGET - RPS.Y());
-
-//    drive->Stop();
-
     drive->LineFollowingBack();
-    //RPS Checks and math. Fun.....
 
-    drive->ZeroTurnClockwise(90);
-
-    Sleep(0.25);
-
-    if(RPS.Heading() < 359.9 && RPS.Heading() > 330)
+    //Check that it didn't just see the ramp
+    if(yTargetFuel - RPS.Y() > 20.0 || RPS.Y() < 0)
     {
-        drive->ZeroTurnCounter(359.9 - RPS.Heading());
+        drive->LineFollowingBack();
+    }
+    //RPS Checks and math. Fun....
+    if(RPS.X() < xTargetFuel - 5/8.0 || RPS.X() > xTargetFuel)
+    {
+        drive->ZeroTurnClockwise(90);
+
+        Sleep(0.25);
+
+        if(RPS.X() < 0)
+        {
+            while(RPS.X() < 0)
+            {
+                drive->MoveBackwards(30);
+            }
+            drive->Stop();
+        }
+        if(RPS.Heading() < 359.9 && RPS.Heading() > 330)
+        {
+            drive->ZeroTurnCounter(359.9 - RPS.Heading());
+            Sleep(0.25);
+        }
+        else if(RPS.Heading() > 0)
+        {
+            drive->ZeroTurnClockwise(RPS.Heading());
+            Sleep(0.25);
+        }
+
+        if(RPS.X() < 0)
+        {
+            while(RPS.X() < 0)
+            {
+                drive->MoveBackwards(30);
+            }
+            drive->Stop();
+        }
+        if(RPS.X() < xTargetFuel)
+        {
+            drive->MoveBackwards(30);
+
+            drive->WaitForSetpointInch(xTargetFuel - RPS.X());
+
+            drive->Stop();
+
+            Sleep(0.25);
+        }
+
+        if(RPS.X() < xTargetFuel  - 0.1)
+        {
+            while(RPS.X() < xTargetFuel - 0.1) //0.0
+            {
+                drive->MoveBackwards(25);
+                Sleep(0.05);
+                drive->Stop();
+                Sleep(0.1);
+            }
+        }
+        else if(RPS.X() > xTargetFuel + 0.1)
+        {
+            while(RPS.X() > xTargetFuel + 0.1)
+            {
+                drive->MoveForward(25);
+                Sleep(0.05);
+                drive->Stop();
+                Sleep(0.1);
+            }
+        }
+
+        drive->ZeroTurnCounter(90);
+
         Sleep(0.25);
     }
-    else if(RPS.Heading() > 0)
-    {
-        drive->ZeroTurnClockwise(RPS.Heading());
-        Sleep(0.25);
-    }
-
-    drive->MoveBackwards(30);
-
-//    Sleep(2.0);
-
-//    drive->Stop();
-
-//    Sleep(0.25);
-
-//    drive->MoveForward(30);
-
-//    drive->WaitForSetpointInch(RPS.X() - X_TARGET);
-
-    drive->WaitForSetpointInch(X_TARGET - RPS.X());
-
-    drive->Stop();
-
-    Sleep(0.25);
-
-    if(RPS.X() < X_TARGET )
-    {
-        while(RPS.X() < X_TARGET)
-        {
-            drive->MoveBackwards(25);
-            Sleep(0.05);
-            drive->Stop();
-            Sleep(0.1);
-        }
-    }
-    else if(RPS.X() > X_TARGET + 0.1)
-    {
-        while(RPS.X() > X_TARGET + 0.1)
-        {
-            drive->MoveForward(25);
-            Sleep(0.05);
-            drive->Stop();
-            Sleep(0.1);
-        }
-    }
-
-    drive->ZeroTurnCounter(90);
-
-    Sleep(0.25);
 
     start = TimeNow();
 
@@ -398,113 +437,22 @@ int main(void)
         }
     }
 
-//    if(RPS.X() < X_TARGET)
-//    {
-//        //Do the maths
-//        float x = X_TARGET - RPS.X();
-//        float y = Y_TARGET - RPS.Y();
-
-//        float angle = 90 - atan2(y, x); //Not right. Fix later.
-
-//        float target = sqrt(pow(x, 2) + pow(y, 2));
-
-//        drive->ZeroTurnClockwise(angle);
-
-//        drive->Stop();
-
-//        Sleep(0.25);
-
-//        drive->MoveBackwards(30);
-
-//        drive->WaitForSetpointInch(target);
-
-//        drive->Stop();
-
-//        Sleep(0.25);
-
-//        drive->MoveForward(20);
-
-//        drive->WaitForSetpointInch(0.5);
-
-//        drive->Stop();
-
-//        Sleep(0.25);
-
-//        drive->ZeroTurnCounter(90);
-
-//        drive->Stop();
-
-//        Sleep(0.25);
-
-//        start = TimeNow();
-
-//        while((RPS.Heading() < 90 - 1 || RPS.Heading() > 90 + 1) && TimeNow() - start < 0.25)
-//        {
-//            if(RPS.Heading() < 90)
-//            {
-//                drive->ZeroTurnCounter(90 - RPS.Heading());
-
-//                drive->Stop();
-
-//                Sleep(0.25);
-//            }
-//            else
-//            {
-//                drive->ZeroTurnClockwise(RPS.Heading() - 90);
-
-//                drive->Stop();
-
-//                Sleep(0.25);
-//            }
-//        }
-//    }
-//    else if(RPS.X() > X_TARGET)
-//    {
-//        //Do the other maths
-//        float x = RPS.X() - X_TARGET;
-//        float y = Y_TARGET - RPS.Y();
-
-//        float angle = 90 - atan2(y, x); //Not right. Fix later.
-
-//        float target = sqrt(pow(x, 2) + pow(y, 2));
-
-//        drive->ZeroTurnCounter(angle);
-
-//        drive->Stop();
-
-//        Sleep(0.25);
-
-//        drive->MoveBackwards(30);
-
-//        drive->WaitForSetpointInch(target);
-
-//        drive->Stop();
-
-//        Sleep(0.25);
-
-//        drive->ZeroTurnClockwise(90 - RPS.Heading());
-
-//        drive->Stop();
-
-//        Sleep(0.25);
-//    }
-
     drive->MoveBackwards(30);
 
-    drive->WaitForSetpointInch(Y_TARGET - RPS.Y());
+    drive->WaitForSetpointInch(yTargetFuel - RPS.Y());
 
     drive->Stop();
 
-    while(RPS.Y() < Y_TARGET - 0.2 || RPS.Y() > Y_TARGET + 0.05)
+    while(RPS.Y() < yTargetFuel - 0.2 || RPS.Y() > yTargetFuel + 0.05)
     {
-        if(RPS.Y() < Y_TARGET)
+        if(RPS.Y() < yTargetFuel)
         {
             drive->MoveBackwards(30);
             Sleep(0.05);
             drive->Stop();
             Sleep(0.1);
         }
-        else if(RPS.Y() > Y_TARGET)
+        else if(RPS.Y() > yTargetFuel)
         {
             drive->MoveForward(30);
             Sleep(0.05);
@@ -524,9 +472,9 @@ int main(void)
         Sleep(0.25);
     }
 
-    buttonSwitch->ToRedButton();
+    buttonSwitch->NeutralButton();
 
-    Sleep(0.25);
+    Sleep(1.0);
 
     start = TimeNow();
 
@@ -582,7 +530,7 @@ int main(void)
 
     drive->BackwardsTurn(50, 40);
 
-    Sleep(2.0);
+    Sleep(2.5);
 
     drive->Stop();
 
@@ -591,7 +539,7 @@ int main(void)
     //////////////////////////////////////
 
     //RPS Checks for posiiton to line up on the middle switch
-
+    robot->FlipSwitches(RPS.RedSwitchDirection(), RPS.WhiteSwitchDirection(), RPS.BlueSwitchDirection());
     //RPS Checks for posiiton to line up on the middle switch
 
     /////////////////////////////
@@ -605,7 +553,6 @@ int main(void)
     drive->Stop();
 
     Sleep(0.25);
-
 
     drive->MoveBackwards(50);
 
@@ -624,7 +571,7 @@ int main(void)
 
     start = TimeNow();
 
-    while(((RPS.Heading() < 359.9 - 1 && RPS.Heading() > 180) || (RPS.Heading() > 0 + 1 && RPS.Heading() < 180)) && TimeNow() - start < 1.0)
+    while(((RPS.Heading() < 359.9 - 1 && RPS.Heading() > 180) || (RPS.Heading() > 0 + 1 && RPS.Heading() < 180)) && TimeNow() - start < 2.0)
     {
         if(RPS.Heading() < 359.9 && RPS.Heading() > 180)
         {
@@ -640,7 +587,7 @@ int main(void)
 
     drive->MoveBackwards(50);
 
-    drive->WaitForSetpointInch(X_TARGET - RPS.X());
+    drive->WaitForSetpointInch(xTargetFuel - RPS.X() + 0.5);
 
     drive->Stop();
 
@@ -671,46 +618,16 @@ int main(void)
 
     Sleep(0.25);
 
-    if(RPS.Y() > POST_RAMP_Y_DOWN)
+    if(RPS.Y() > postRampYDown)
     {
         drive->MoveForward(30);
 
-        drive->WaitForSetpointInch(RPS.Y() - POST_RAMP_Y_DOWN);
+        drive->WaitForSetpointInch(RPS.Y() - postRampYDown);
 
         drive->Stop();
 
         Sleep(0.25);
     }
-
-    float x = RPS.X();
-    float y = RPS.Y();
-    float hyp = sqrt(pow(x,2) + pow(y,2));
-
-    angle = 180 - atan2(x, y);
-
-    drive->ZeroTurnCounter(angle);
-
-    Sleep(0.25);
-
-    start = TimeNow();
-
-    while((RPS.Heading() < angle - 1 || RPS.Heading() > angle + 1) && TimeNow() - start < 2.0)
-    {
-        if(RPS.Heading() < angle)
-        {
-            drive->ZeroTurnCounter(angle - RPS.Heading());
-            Sleep(0.25);
-        }
-        else if(RPS.Heading() > angle)
-        {
-            drive->ZeroTurnClockwise(RPS.Heading() - angle);
-            Sleep(0.25);
-        }
-    }
-
-    drive->MoveBackwards(70);
-
-    drive->WaitForSetpointInch(hyp);
 
 //    drive->ZeroTurnCounter(90);
 
@@ -727,9 +644,9 @@ int main(void)
 //        Sleep(0.25);
 //    }
 
-//    drive->MoveBackwards(70);
+//    drive->MoveBackwards(50);
 
-//    drive->WaitForSetpointInch(RPS.X() - FINAL_X_TARGET);
+//    drive->WaitForSetpointInch(RPS.X() - finalXTarget);
 
 //    drive->Stop();
 
@@ -748,6 +665,85 @@ int main(void)
 
 //    drive->MoveBackwards(70);
 
-//    drive->WaitForSetpointInch(RPS.Y());
+//    Sleep(2.0);
+
+//    drive->Stop();
+
+//    Sleep(0.25);
+
+//    drive->MoveForward(50);
+
+//    drive->WaitForSetpointInch(5.0);
+
+//    drive->Stop();
+
+//    drive->ZeroTurnClockwise(45);
+
+//    drive->MoveBackwards(50);
+
+//    Sleep(3.0);
+
+    float x = RPS.X();
+    float y = RPS.Y();
+
+    angle = atan2(y, x);
+
+    drive->ZeroTurnCounter(angle);
+
+    if(RPS.Heading() < 90 + angle)
+    {
+        drive->ZeroTurnCounter(90 + angle - RPS.Heading());
+        Sleep(0.25);
+    }
+    else if(RPS.Heading() > 90 + angle)
+    {
+        drive->ZeroTurnClockwise(RPS.Heading() - 90 + angle);
+        Sleep(0.25);
+    }
+
+    x = RPS.X();
+    y = RPS.Y();
+    float hyp = sqrt(pow(x, 2) + pow(y, 2));
+
+    drive->MoveBackwards(70);
+
+    drive->WaitForSetpointInch(hyp / 2);
+
+    Sleep(0.25);
+
+    x = RPS.X();
+    y = RPS.Y();
+
+    angle = atan2(y, x);
+
+    if(RPS.Heading() < 90 + angle)
+    {
+        drive->ZeroTurnCounter(90 + angle - RPS.Heading());
+        Sleep(0.25);
+    }
+    else if(RPS.Heading() > 90 + angle)
+    {
+        drive->ZeroTurnClockwise(RPS.Heading() - 90 + angle);
+        Sleep(0.25);
+    }
+
+
+    if(RPS.Heading() < 90 + angle)
+    {
+        drive->ZeroTurnCounter(90 + angle - RPS.Heading());
+        Sleep(0.25);
+    }
+    else if(RPS.Heading() > 90 + angle)
+    {
+        drive->ZeroTurnClockwise(RPS.Heading() - 90 + angle);
+        Sleep(0.25);
+    }
+
+    hyp = sqrt(pow(x, 2) + pow(y, 2));
+
+    drive->MoveBackwards(70);
+
+    drive->WaitForSetpointInch(hyp);
+
     return 0;
 }

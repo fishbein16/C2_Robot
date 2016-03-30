@@ -19,6 +19,11 @@ void ButtonSwitch::ArmOut()
     forBackServo->SetDegree(SERVO_OUT);
 }
 
+void ButtonSwitch::ArmFullIn()
+{
+    forBackServo->SetDegree(SERVO_FULL_IN);
+}
+
 void ButtonSwitch::ArmIn()
 {
     forBackServo->SetDegree(SERVO_IN);
@@ -34,6 +39,11 @@ void ButtonSwitch::ArmOutMid()
     forBackServo->SetDegree(SERVO_OUT_MID);
 }
 
+void ButtonSwitch::ToStart()
+{
+    forBackServo->SetDegree(START_ANGLE);
+}
+
 void ButtonSwitch::ToBlueButton()
 {
     rotationServo->SetDegree(BLUE_BUTTON);
@@ -44,9 +54,14 @@ void ButtonSwitch::ToRedButton()
     rotationServo->SetDegree(RED_BUTTON);
 }
 
-void ButtonSwitch::ToMiddleSwitch()
+void ButtonSwitch::ToMiddleSwitchPush()
 {
-    rotationServo->SetDegree(MID_SWITCH);
+    rotationServo->SetDegree(MID_SWITCH_PUSH);
+}
+
+void ButtonSwitch::ToMiddleSwitchPull()
+{
+    rotationServo->SetDegree(MID_SWITCH_PULL);
 }
 
 void ButtonSwitch::ToLeftSwitch()
@@ -67,4 +82,9 @@ void ButtonSwitch::ToLeftMidGap()
 void ButtonSwitch::ToRightMidGap()
 {
     rotationServo->SetDegree(RIGHT_MID_GAP);
+}
+
+void ButtonSwitch::NeutralButton()
+{
+    rotationServo->SetDegree(NEUTRAL_BUTTON);
 }
