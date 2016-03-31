@@ -4,6 +4,7 @@
 #include <FEHIO.h>
 #include <FEHLCD.h>
 #include <cstring>
+#include <FEHRPS.h>
 #include "DriveSystem.h"
 #include "ButtonSwitch.h"
 
@@ -28,8 +29,8 @@
 
 //Course C
 #define SUP_X_TARGET_C          28.3 //26.3  28.4
-#define X_TARGET_C              30.0
-#define Y_TARGET_C              64.1
+#define X_TARGET_C              30.4
+#define Y_TARGET_C              63.9
 
 #define FINAL_X_TARGET_C        4.900
 #define POST_RAMP_Y_DOWN_C      21.500
@@ -44,7 +45,7 @@
 
 //Course E
 #define SUP_X_TARGET_E          28.3 //26.3  28.4
-#define X_TARGET_E              30.0
+#define X_TARGET_E              30.2
 #define Y_TARGET_E              64.1
 
 #define FINAL_X_TARGET_E        4.900

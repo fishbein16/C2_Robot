@@ -13,8 +13,6 @@ int main(void)
 {
     using namespace std;
 
-    ButtonBoard button(FEHIO::Bank3);
-
     RPS.InitializeTouchMenu();
 
     float supXTarget, supYTarget, rampXMin, rampXMax, xTargetFuel, yTargetFuel, finalXTarget, postRampYDown;
@@ -188,6 +186,15 @@ int main(void)
     Sleep(0.25);
     //Correction and mechanism here
     //Correct to (28.7, 11.5)
+
+    drive->ZeroTurnClockwise(10);
+
+    drive->ZeroTurnCounter(10);
+
+    drive->MoveForward(30);
+
+    drive->WaitForSetpointInch(RPS.Y() - 11.5);
+
     supplyArm->ToPickUp();
 
     Sleep(0.5);
@@ -629,121 +636,121 @@ int main(void)
         Sleep(0.25);
     }
 
-//    drive->ZeroTurnCounter(90);
-
-//    Sleep(0.25);
-
-//    if(RPS.Heading() < 180)
-//    {
-//        drive->ZeroTurnCounter(180 - RPS.Heading());
-//        Sleep(0.25);
-//    }
-//    else if(RPS.Heading() > 180)
-//    {
-//        drive->ZeroTurnClockwise(RPS.Heading() - 180);
-//        Sleep(0.25);
-//    }
-
-//    drive->MoveBackwards(50);
-
-//    drive->WaitForSetpointInch(RPS.X() - finalXTarget);
-
-//    drive->Stop();
-
-//    drive->ZeroTurnCounter(90);
-
-//    if(RPS.Heading() < 270)
-//    {
-//        drive->ZeroTurnCounter(270 - RPS.Heading());
-//        Sleep(0.25);
-//    }
-//    else if(RPS.Heading() > 270)
-//    {
-//        drive->ZeroTurnClockwise(RPS.Heading() - 270);
-//        Sleep(0.25);
-//    }
-
-//    drive->MoveBackwards(70);
-
-//    Sleep(2.0);
-
-//    drive->Stop();
-
-//    Sleep(0.25);
-
-//    drive->MoveForward(50);
-
-//    drive->WaitForSetpointInch(5.0);
-
-//    drive->Stop();
-
-//    drive->ZeroTurnClockwise(45);
-
-//    drive->MoveBackwards(50);
-
-//    Sleep(3.0);
-
-    float x = RPS.X();
-    float y = RPS.Y();
-
-    angle = atan2(y, x);
-
-    drive->ZeroTurnCounter(angle);
-
-    if(RPS.Heading() < 90 + angle)
-    {
-        drive->ZeroTurnCounter(90 + angle - RPS.Heading());
-        Sleep(0.25);
-    }
-    else if(RPS.Heading() > 90 + angle)
-    {
-        drive->ZeroTurnClockwise(RPS.Heading() - 90 + angle);
-        Sleep(0.25);
-    }
-
-    x = RPS.X();
-    y = RPS.Y();
-    float hyp = sqrt(pow(x, 2) + pow(y, 2));
-
-    drive->MoveBackwards(70);
-
-    drive->WaitForSetpointInch(hyp / 2);
+    drive->ZeroTurnCounter(90);
 
     Sleep(0.25);
 
-    x = RPS.X();
-    y = RPS.Y();
-
-    angle = atan2(y, x);
-
-    if(RPS.Heading() < 90 + angle)
+    if(RPS.Heading() < 180)
     {
-        drive->ZeroTurnCounter(90 + angle - RPS.Heading());
+        drive->ZeroTurnCounter(180 - RPS.Heading());
         Sleep(0.25);
     }
-    else if(RPS.Heading() > 90 + angle)
+    else if(RPS.Heading() > 180)
     {
-        drive->ZeroTurnClockwise(RPS.Heading() - 90 + angle);
+        drive->ZeroTurnClockwise(RPS.Heading() - 180);
         Sleep(0.25);
     }
 
+    drive->MoveBackwards(50);
 
-    if(RPS.Heading() < 90 + angle)
+    drive->WaitForSetpointInch(RPS.X() - finalXTarget);
+
+    drive->Stop();
+
+    drive->ZeroTurnCounter(90);
+
+    if(RPS.Heading() < 270)
     {
-        drive->ZeroTurnCounter(90 + angle - RPS.Heading());
+        drive->ZeroTurnCounter(270 - RPS.Heading());
         Sleep(0.25);
     }
-    else if(RPS.Heading() > 90 + angle)
+    else if(RPS.Heading() > 270)
     {
-        drive->ZeroTurnClockwise(RPS.Heading() - 90 + angle);
+        drive->ZeroTurnClockwise(RPS.Heading() - 270);
         Sleep(0.25);
     }
-
-    hyp = sqrt(pow(x, 2) + pow(y, 2));
 
     drive->MoveBackwards(70);
 
-    drive->WaitForSetpointInch(hyp);
+    Sleep(2.0);
+
+    drive->Stop();
+
+    Sleep(0.25);
+
+    drive->MoveForward(50);
+
+    drive->WaitForSetpointInch(5.0);
+
+    drive->Stop();
+
+    drive->ZeroTurnClockwise(45);
+
+    drive->MoveBackwards(50);
+
+    Sleep(3.0);
+
+//    float x = RPS.X();
+//    float y = RPS.Y();
+
+//    angle = atan2(x, y);
+
+//    drive->ZeroTurnCounter(angle);
+
+//    if(RPS.Heading() < 90 + angle)
+//    {
+//        drive->ZeroTurnCounter(90 + angle - RPS.Heading());
+//        Sleep(0.25);
+//    }
+//    else if(RPS.Heading() > 90 + angle)
+//    {
+//        drive->ZeroTurnClockwise(RPS.Heading() - 90 + angle);
+//        Sleep(0.25);
+//    }
+
+//    x = RPS.X();
+//    y = RPS.Y();
+//    float hyp = sqrt(pow(x, 2) + pow(y, 2));
+
+//    drive->MoveBackwards(70);
+
+//    drive->WaitForSetpointInch(hyp / 2);
+
+//    Sleep(0.25);
+
+//    x = RPS.X();
+//    y = RPS.Y();
+
+//    angle = atan2(x, y);
+
+//    if(RPS.Heading() < 90 + angle)
+//    {
+//        drive->ZeroTurnCounter(90 + angle - RPS.Heading());
+//        Sleep(0.25);
+//    }
+//    else if(RPS.Heading() > 90 + angle)
+//    {
+//        drive->ZeroTurnClockwise(RPS.Heading() - 90 + angle);
+//        Sleep(0.25);
+//    }
+
+
+//    if(RPS.Heading() < 90 + angle)
+//    {
+//        drive->ZeroTurnCounter(90 + angle - RPS.Heading());
+//        Sleep(0.25);
+//    }
+//    else if(RPS.Heading() > 90 + angle)
+//    {
+//        drive->ZeroTurnClockwise(RPS.Heading() - 90 + angle);
+//        Sleep(0.25);
+//    }
+
+//    hyp = sqrt(pow(x, 2) + pow(y, 2));
+
+//    drive->MoveBackwards(70);
+
+//    drive->WaitForSetpointInch(hyp);
 
     return 0;
 }
