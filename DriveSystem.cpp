@@ -11,8 +11,8 @@ DriveSystem::DriveSystem()
   rightEncoder = new DigitalInputPin(FEHIO::P1_0);
   leftEncoder = new DigitalInputPin(FEHIO::P1_2);
 
-  leftSensor = new AnalogInputPin(FEHIO::P0_2);
-  middleSensor = new AnalogInputPin(FEHIO::P0_1);
+  leftSensor = new AnalogInputPin(FEHIO::P0_6);
+  middleSensor = new AnalogInputPin(FEHIO::P0_3);
   rightSensor = new AnalogInputPin(FEHIO::P0_0);
 
   lineState = STATE_STRAIGHT;
