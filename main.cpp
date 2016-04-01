@@ -234,7 +234,7 @@ int main(void)
         Sleep(0.25);
     }
 
-    if(RPS.X() < /*rampXMin*/xTargetFuel - 1.7)
+    if(RPS.X() < /*rampXMin*/xTargetFuel - 1.6)
     {
         drive->ZeroTurnClockwise(RPS.Heading());
 
@@ -535,7 +535,7 @@ int main(void)
     ///////Drop Off to Switches///////
     //////////////////////////////////
 
-    drive->BackwardsTurn(50, 40);
+    drive->BackwardsTurn(50, 50);
 
     Sleep(2.5);
 
@@ -599,6 +599,14 @@ int main(void)
     drive->Stop();
 
     Sleep(0.25);
+
+    while(RPS.X() < xTargetFuel)
+    {
+        drive->MoveBackwards(50);
+        Sleep(0.05);
+        drive->Stop();
+        Sleep(0.05);
+    }
 
     drive->ZeroTurnCounter(90);
 
@@ -684,7 +692,7 @@ int main(void)
 
     drive->Stop();
 
-    drive->ZeroTurnClockwise(45);
+    drive->ZeroTurnClockwise(70);
 
     drive->MoveBackwards(50);
 

@@ -9,6 +9,7 @@
 #define FOR_BACK_MAX    2283.0
 
 #define SERVO_OUT       120.0
+#define SERVO_PULL      100.0
 #define SERVO_FULL_IN   30.0
 #define SERVO_IN        60.0
 #define SERVO_IN_MID    70.0
@@ -29,6 +30,7 @@ class ButtonSwitch
 public:
     ButtonSwitch();
     void ArmOut();
+    void ArmPull();
     void ArmFullIn();
     void ArmIn();
     void ArmInMid();

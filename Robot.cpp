@@ -50,6 +50,8 @@ void Robot::FlipSwitches(int left, int middle, int right)
         Sleep(0.5);
         buttonSwitch->ToLeftSwitch();
 
+        buttonSwitch->ArmPull();
+
         drive->MoveForward(30);
         drive->WaitForSetpointInch(2.5);
         drive->Stop();
@@ -57,12 +59,13 @@ void Robot::FlipSwitches(int left, int middle, int right)
 
         againstWall = false;
 
-//        drive->MoveForward(50);
+        drive->MoveBackwards(50);
 
-//        drive->WaitForSetpointInch(2.5);
+        drive->WaitForSetpointInch(2.5);
 
-//        drive->Stop();
+        drive->Stop();
 
+        buttonSwitch->ArmOut();
         buttonSwitch->ToLeftMidGap();
         Sleep(0.5);
     }
@@ -76,7 +79,7 @@ void Robot::FlipSwitches(int left, int middle, int right)
         }
         else
         {
-            drive->WaitForSetpointInch(2.0);
+            drive->WaitForSetpointInch(4.5);
         }
         drive->Stop();
         againstWall = false;
@@ -88,10 +91,17 @@ void Robot::FlipSwitches(int left, int middle, int right)
         Sleep(0.5);
 
         drive->MoveBackwards(30);
-        drive->WaitForSetpointInch(4.7);
+        drive->WaitForSetpointInch(2.0);
         drive->Stop();
         Sleep(0.5);
-        againstWall = true;
+        buttonSwitch->ArmIn();
+        againstWall = false;
+        buttonSwitch->ToRightMidGap();
+        Sleep(0.5);
+
+        drive->MoveBackwards(30);
+        drive->WaitForSetpointInch(1.0);
+        drive->Stop();
     }
     else if(middle == 2)
     {
@@ -114,46 +124,51 @@ void Robot::FlipSwitches(int left, int middle, int right)
         drive->WaitForSetpointInch(2.0);
         drive->Stop();
         againstWall = false;
+        buttonSwitch->ArmIn();
         Sleep(0.5);
-    }
+        buttonSwitch->ToRightMidGap();
+        Sleep(0.5);
 
-    buttonSwitch->ToRightMidGap();
-
-    if(againstWall)
-    {
-        drive->MoveForward(30);
-        drive->WaitForSetpointInch(1.0);
-        drive->Stop();
-        againstWall = false;
-    }
-    else if(!againstWall)
-    {
         drive->MoveForward(30);
         drive->WaitForSetpointInch(0.3);
         drive->Stop();
     }
 
+//    if(againstWall)
+//    {
+//        drive->MoveForward(30);
+//        drive->WaitForSetpointInch(1.0);
+//        drive->Stop();
+//        againstWall = false;
+//    }
+//    else if(!againstWall)
+//    {
+//        drive->MoveForward(30);
+//        drive->WaitForSetpointInch(0.3);
+//        drive->Stop();
+//    }
+
     buttonSwitch->ArmOut();
 
     Sleep(0.5);
 
-    while(RPS.Heading() < 0)
-    {
-        drive->MoveBackwards(30);
-        Sleep(0.05);
-        drive->Stop();
-        Sleep(0.05);
-    }
-    if(RPS.Heading() < 270)
-    {
-        drive->ZeroTurnCounter(270 - RPS.Heading());
-        Sleep(0.25);
-    }
-    else if(RPS.Heading() > 270)
-    {
-        drive->ZeroTurnClockwise(RPS.Heading() - 270);
-        Sleep(0.25);
-    }
+//    while(RPS.Heading() < 0)
+//    {
+//        drive->MoveBackwards(30);
+//        Sleep(0.05);
+//        drive->Stop();
+//        Sleep(0.05);
+//    }
+//    if(RPS.Heading() < 270)
+//    {
+//        drive->ZeroTurnCounter(270 - RPS.Heading());
+//        Sleep(0.25);
+//    }
+//    else if(RPS.Heading() > 270)
+//    {
+//        drive->ZeroTurnClockwise(RPS.Heading() - 270);
+//        Sleep(0.25);
+//    }
 
     if(right == 1)
     {
@@ -178,6 +193,7 @@ void Robot::FlipSwitches(int left, int middle, int right)
 
         buttonSwitch->ToRightSwitch();
         Sleep(0.5);
+        buttonSwitch->ArmPull();
 
         drive->MoveForward(30);
         drive->WaitForSetpointInch(1.0);

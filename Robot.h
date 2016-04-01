@@ -16,7 +16,7 @@
 #define X_TARGET_A              30.0
 #define Y_TARGET_A              64.1
 
-#define FINAL_X_TARGET_A        4.900
+#define FINAL_X_TARGET_A        3.4
 #define POST_RAMP_Y_DOWN_A      21.500
 
 //Course B
@@ -24,7 +24,7 @@
 #define X_TARGET_B              30.0
 #define Y_TARGET_B              64.1
 
-#define FINAL_X_TARGET_B        4.900
+#define FINAL_X_TARGET_B        3.400
 #define POST_RAMP_Y_DOWN_B      21.500
 
 //Course C
@@ -32,7 +32,7 @@
 #define X_TARGET_C              30.4
 #define Y_TARGET_C              63.9
 
-#define FINAL_X_TARGET_C        4.900
+#define FINAL_X_TARGET_C        3.400
 #define POST_RAMP_Y_DOWN_C      21.500
 
 //Course D
@@ -40,15 +40,15 @@
 #define X_TARGET_D              30.0
 #define Y_TARGET_D              64.1
 
-#define FINAL_X_TARGET_D        4.900
+#define FINAL_X_TARGET_D        3.400
 #define POST_RAMP_Y_DOWN_D      21.500
 
 //Course E
-#define SUP_X_TARGET_E          28.3 //26.3  28.4
+#define SUP_X_TARGET_E          29.3 //26.3  28.4 28.3
 #define X_TARGET_E              30.2
 #define Y_TARGET_E              64.1
 
-#define FINAL_X_TARGET_E        4.900
+#define FINAL_X_TARGET_E        3.400
 #define POST_RAMP_Y_DOWN_E      21.500
 
 //Course F
@@ -56,7 +56,7 @@
 #define X_TARGET_F              30.0
 #define Y_TARGET_F              64.1
 
-#define FINAL_X_TARGET_F        4.900
+#define FINAL_X_TARGET_F        3.400
 #define POST_RAMP_Y_DOWN_F      21.500
 
 //Course G
@@ -64,7 +64,7 @@
 #define X_TARGET_G              30.0
 #define Y_TARGET_G              64.1
 
-#define FINAL_X_TARGET_G        4.900
+#define FINAL_X_TARGET_G        3.400
 #define POST_RAMP_Y_DOWN_G      21.500
 
 //Course H
@@ -72,7 +72,7 @@
 #define X_TARGET_H              30.0
 #define Y_TARGET_H              64.1
 
-#define FINAL_X_TARGET_H        4.900
+#define FINAL_X_TARGET_H        3.400
 #define POST_RAMP_Y_DOWN_H      21.500
 
 #define YELLOW_BLUE_THRESHOLD   1.25

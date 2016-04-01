@@ -11,7 +11,7 @@
 #define MID_THRESHOLD               0.160
 #define RIGHT_THRESHOLD             0.500
 
-#define FULL_LEFT_PERCENT           50
+#define FULL_LEFT_PERCENT           60
 #define FULL_RIGHT_PERCENT          20
 #define FULL_RIGHT_NOT_STRAIGHT     50
 #define MINOR_PERCENT               -10
