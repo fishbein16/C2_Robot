@@ -159,16 +159,16 @@ void Robot::FlipSwitches(int left, int middle, int right)
 //        drive->Stop();
 //        Sleep(0.05);
 //    }
-//    if(RPS.Heading() < 270)
-//    {
-//        drive->ZeroTurnCounter(270 - RPS.Heading());
-//        Sleep(0.25);
-//    }
-//    else if(RPS.Heading() > 270)
-//    {
-//        drive->ZeroTurnClockwise(RPS.Heading() - 270);
-//        Sleep(0.25);
-//    }
+    if(RPS.Heading() < 270)
+    {
+        drive->ZeroTurnCounter(270 - RPS.Heading());
+        Sleep(0.25);
+    }
+    else if(RPS.Heading() > 270)
+    {
+        drive->ZeroTurnClockwise(RPS.Heading() - 270);
+        Sleep(0.25);
+    }
 
     if(right == 1)
     {
@@ -188,7 +188,7 @@ void Robot::FlipSwitches(int left, int middle, int right)
         Sleep(0.5);
 
         drive->MoveBackwards(30);
-        drive->WaitForSetpointInch(2.0);
+        drive->WaitForSetpointInch(3.0);
         drive->Stop();
 
         buttonSwitch->ToRightSwitch();
@@ -272,7 +272,7 @@ void Robot::PressButton()
     buttonSwitch->ToRedButton();
 }
 
-void Robot::SelectRPSRegionVariables(float *supXTarget, float *xTarget, float *yTarget, float *finalXTarget, float *postRampYDown)
+void Robot::SelectRPSRegionVariables(float *supXTarget, float *xTarget, float *yTarget, float *finalXTarget, float *postRampYDown, float *switchX, float *switchY)
 {
     using namespace std;
     int cancel = 1;
@@ -388,6 +388,8 @@ void Robot::SelectRPSRegionVariables(float *supXTarget, float *xTarget, float *y
         *yTarget = Y_TARGET_A;
         *finalXTarget = FINAL_X_TARGET_A;
         *postRampYDown = POST_RAMP_Y_DOWN_A;
+        *switchX = SWITCH_X_A;
+        *switchY = SWITCH_Y_A;
         break;
     case 'B':
         *supXTarget = SUP_X_TARGET_B;
@@ -395,6 +397,8 @@ void Robot::SelectRPSRegionVariables(float *supXTarget, float *xTarget, float *y
         *yTarget = Y_TARGET_B;
         *finalXTarget = FINAL_X_TARGET_B;
         *postRampYDown = POST_RAMP_Y_DOWN_B;
+        *switchX = SWITCH_X_B;
+        *switchY = SWITCH_Y_B;
         break;
     case 'C':
         *supXTarget = SUP_X_TARGET_C;
@@ -402,6 +406,8 @@ void Robot::SelectRPSRegionVariables(float *supXTarget, float *xTarget, float *y
         *yTarget = Y_TARGET_C;
         *finalXTarget = FINAL_X_TARGET_C;
         *postRampYDown = POST_RAMP_Y_DOWN_C;
+        *switchX = SWITCH_X_C;
+        *switchY = SWITCH_Y_C;
         break;
     case 'D':
         *supXTarget = SUP_X_TARGET_D;
@@ -409,6 +415,8 @@ void Robot::SelectRPSRegionVariables(float *supXTarget, float *xTarget, float *y
         *yTarget = Y_TARGET_D;
         *finalXTarget = FINAL_X_TARGET_D;
         *postRampYDown = POST_RAMP_Y_DOWN_D;
+        *switchX = SWITCH_X_D;
+        *switchY = SWITCH_Y_D;
         break;
     case 'E':
         *supXTarget = SUP_X_TARGET_E;
@@ -416,6 +424,8 @@ void Robot::SelectRPSRegionVariables(float *supXTarget, float *xTarget, float *y
         *yTarget = Y_TARGET_E;
         *finalXTarget = FINAL_X_TARGET_E;
         *postRampYDown = POST_RAMP_Y_DOWN_E;
+        *switchX = SWITCH_X_E;
+        *switchY = SWITCH_Y_E;
         break;
     case 'F':
         *supXTarget = SUP_X_TARGET_F;
@@ -423,6 +433,8 @@ void Robot::SelectRPSRegionVariables(float *supXTarget, float *xTarget, float *y
         *yTarget = Y_TARGET_F;
         *finalXTarget = FINAL_X_TARGET_F;
         *postRampYDown = POST_RAMP_Y_DOWN_F;
+        *switchX = SWITCH_X_F;
+        *switchY = SWITCH_Y_F;
         break;
     case 'G':
         *supXTarget = SUP_X_TARGET_G;
@@ -430,6 +442,8 @@ void Robot::SelectRPSRegionVariables(float *supXTarget, float *xTarget, float *y
         *yTarget = Y_TARGET_G;
         *finalXTarget = FINAL_X_TARGET_G;
         *postRampYDown = POST_RAMP_Y_DOWN_G;
+        *switchX = SWITCH_X_G;
+        *switchY = SWITCH_Y_G;
         break;
     case 'H':
         *supXTarget = SUP_X_TARGET_H;
@@ -437,6 +451,8 @@ void Robot::SelectRPSRegionVariables(float *supXTarget, float *xTarget, float *y
         *yTarget = Y_TARGET_H;
         *finalXTarget = FINAL_X_TARGET_H;
         *postRampYDown = POST_RAMP_Y_DOWN_H;
+        *switchX = SWITCH_X_H;
+        *switchY = SWITCH_Y_H;
         break;
     }
 }

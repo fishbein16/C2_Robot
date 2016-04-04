@@ -9,15 +9,16 @@
 #include "ButtonSwitch.h"
 #include "SupplyArm.h"
 
+#define PI  3.14159265358979323846
 int main(void)
 {
     using namespace std;
 
     RPS.InitializeTouchMenu();
 
-    float supXTarget, supYTarget, rampXMin, rampXMax, xTargetFuel, yTargetFuel, finalXTarget, postRampYDown;
+    float supXTarget, supYTarget, rampXMin, rampXMax, xTargetFuel, yTargetFuel, finalXTarget, postRampYDown, switchX, switchY;
 
-    robot->SelectRPSRegionVariables(&supXTarget, &xTargetFuel, &yTargetFuel, &finalXTarget, &postRampYDown);
+    robot->SelectRPSRegionVariables(&supXTarget, &xTargetFuel, &yTargetFuel, &finalXTarget, &postRampYDown, &switchX, &switchY);
 
     buttonSwitch->ArmIn();
 
@@ -535,12 +536,26 @@ int main(void)
     ///////Drop Off to Switches///////
     //////////////////////////////////
 
-    drive->BackwardsTurn(50, 50);
+    drive->BackwardsTurn(50, 40);
+
+//    while(RPS.X() < 0);
 
     Sleep(2.5);
 
     drive->Stop();
 
+    Sleep(0.25);
+
+    if(RPS.X() > switchX)
+    {
+        float x = RPS.X() - switchX;
+        float target = x / cos((RPS.Heading() - 180) * PI / 180);
+        drive->MoveForward(30);
+        drive->WaitForSetpointInch(target);
+        drive->Stop();
+        Sleep(0.25);
+        drive->ZeroTurnClockwise(RPS.Heading() - 270);
+    }
     //////////////////////////////////////
     ///////Line up and Hit Switches///////
     //////////////////////////////////////
@@ -644,121 +659,131 @@ int main(void)
         Sleep(0.25);
     }
 
-    drive->ZeroTurnCounter(90);
-
-    Sleep(0.25);
-
-    if(RPS.Heading() < 180)
+    if(RPS.Heading() < 90)
     {
-        drive->ZeroTurnCounter(180 - RPS.Heading());
+        drive->ZeroTurnCounter(90 - RPS.Heading());
         Sleep(0.25);
     }
-    else if(RPS.Heading() > 180)
+    else if(RPS.Heading() > 90)
     {
-        drive->ZeroTurnClockwise(RPS.Heading() - 180);
+        drive->ZeroTurnClockwise(RPS.Heading() - 90);
         Sleep(0.25);
     }
 
-    drive->MoveBackwards(50);
-
-    drive->WaitForSetpointInch(RPS.X() - finalXTarget);
-
-    drive->Stop();
-
-    drive->ZeroTurnCounter(90);
-
-    if(RPS.Heading() < 270)
-    {
-        drive->ZeroTurnCounter(270 - RPS.Heading());
-        Sleep(0.25);
-    }
-    else if(RPS.Heading() > 270)
-    {
-        drive->ZeroTurnClockwise(RPS.Heading() - 270);
-        Sleep(0.25);
-    }
-
-    drive->MoveBackwards(70);
-
-    Sleep(2.0);
-
-    drive->Stop();
-
-    Sleep(0.25);
-
-    drive->MoveForward(50);
-
-    drive->WaitForSetpointInch(5.0);
-
-    drive->Stop();
-
-    drive->ZeroTurnClockwise(70);
-
-    drive->MoveBackwards(50);
-
-    Sleep(3.0);
-
-//    float x = RPS.X();
-//    float y = RPS.Y();
-
-//    angle = atan2(x, y);
-
-//    drive->ZeroTurnCounter(angle);
-
-//    if(RPS.Heading() < 90 + angle)
-//    {
-//        drive->ZeroTurnCounter(90 + angle - RPS.Heading());
-//        Sleep(0.25);
-//    }
-//    else if(RPS.Heading() > 90 + angle)
-//    {
-//        drive->ZeroTurnClockwise(RPS.Heading() - 90 + angle);
-//        Sleep(0.25);
-//    }
-
-//    x = RPS.X();
-//    y = RPS.Y();
-//    float hyp = sqrt(pow(x, 2) + pow(y, 2));
-
-//    drive->MoveBackwards(70);
-
-//    drive->WaitForSetpointInch(hyp / 2);
+//    drive->ZeroTurnCounter(90);
 
 //    Sleep(0.25);
 
-//    x = RPS.X();
-//    y = RPS.Y();
-
-//    angle = atan2(x, y);
-
-//    if(RPS.Heading() < 90 + angle)
+//    if(RPS.Heading() < 180)
 //    {
-//        drive->ZeroTurnCounter(90 + angle - RPS.Heading());
+//        drive->ZeroTurnCounter(180 - RPS.Heading());
 //        Sleep(0.25);
 //    }
-//    else if(RPS.Heading() > 90 + angle)
+//    else if(RPS.Heading() > 180)
 //    {
-//        drive->ZeroTurnClockwise(RPS.Heading() - 90 + angle);
+//        drive->ZeroTurnClockwise(RPS.Heading() - 180);
 //        Sleep(0.25);
 //    }
 
+//    drive->MoveBackwards(50);
 
-//    if(RPS.Heading() < 90 + angle)
+//    drive->WaitForSetpointInch(RPS.X() - finalXTarget);
+
+//    drive->Stop();
+
+//    drive->ZeroTurnCounter(90);
+
+//    if(RPS.Heading() < 270)
 //    {
-//        drive->ZeroTurnCounter(90 + angle - RPS.Heading());
+//        drive->ZeroTurnCounter(270 - RPS.Heading());
 //        Sleep(0.25);
 //    }
-//    else if(RPS.Heading() > 90 + angle)
+//    else if(RPS.Heading() > 270)
 //    {
-//        drive->ZeroTurnClockwise(RPS.Heading() - 90 + angle);
+//        drive->ZeroTurnClockwise(RPS.Heading() - 270);
 //        Sleep(0.25);
 //    }
-
-//    hyp = sqrt(pow(x, 2) + pow(y, 2));
 
 //    drive->MoveBackwards(70);
 
-//    drive->WaitForSetpointInch(hyp);
+//    Sleep(2.0);
+
+//    drive->Stop();
+
+//    Sleep(0.25);
+
+//    drive->MoveForward(50);
+
+//    drive->WaitForSetpointInch(5.0);
+
+//    drive->Stop();
+
+//    drive->ZeroTurnClockwise(70);
+
+//    drive->MoveBackwards(50);
+
+//    Sleep(3.0);
+
+    float x = RPS.X();
+    float y = RPS.Y();
+
+    angle = atan2(x, y) * 180 / PI;
+
+    drive->ZeroTurnCounter(180 - angle);
+
+    if(RPS.Heading() < 270 - angle)
+    {
+        drive->ZeroTurnCounter(270 - angle - RPS.Heading());
+        Sleep(0.25);
+    }
+    else if(RPS.Heading() > 270 - angle)
+    {
+        drive->ZeroTurnClockwise(RPS.Heading() - (270 - angle));
+        Sleep(0.25);
+    }
+
+    x = RPS.X();
+    y = RPS.Y();
+    float hyp = sqrt(pow(x, 2) + pow(y, 2));
+
+    drive->MoveBackwards(70);
+
+    drive->WaitForSetpointInch(hyp / 2);
+
+    Sleep(0.25);
+
+    x = RPS.X();
+    y = RPS.Y();
+
+    angle = atan2(x, y);
+
+    if(RPS.Heading() < 270 - angle)
+    {
+        drive->ZeroTurnCounter(270 - angle - RPS.Heading());
+        Sleep(0.25);
+    }
+    else if(RPS.Heading() > 270 - angle)
+    {
+        drive->ZeroTurnClockwise(RPS.Heading() - (270 - angle));
+        Sleep(0.25);
+    }
+
+    if(RPS.Heading() < 270 - angle)
+    {
+        drive->ZeroTurnCounter(270 - angle - RPS.Heading());
+        Sleep(0.25);
+    }
+    else if(RPS.Heading() > 270 - angle)
+    {
+        drive->ZeroTurnClockwise(RPS.Heading() - (270 - angle));
+        Sleep(0.25);
+    }
+
+    hyp = sqrt(pow(x, 2) + pow(y, 2));
+
+    drive->MoveBackwards(70);
+
+    drive->WaitForSetpointInch(hyp);
 
     return 0;
 }
