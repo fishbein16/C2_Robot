@@ -19,6 +19,11 @@ void ButtonSwitch::ArmOut()
     forBackServo->SetDegree(SERVO_OUT);
 }
 
+void ButtonSwitch::ArmPull()
+{
+    forBackServo->SetDegree(SERVO_PULL);
+}
+
 void ButtonSwitch::ArmFullIn()
 {
     forBackServo->SetDegree(SERVO_FULL_IN);
