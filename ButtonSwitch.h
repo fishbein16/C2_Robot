@@ -8,7 +8,7 @@
 #define FOR_BACK_MIN    500.0
 #define FOR_BACK_MAX    2283.0
 
-#define SERVO_OUT       120.0
+#define SERVO_OUT       130.0
 #define SERVO_PULL      100.0
 #define SERVO_FULL_IN   30.0
 #define SERVO_IN        60.0

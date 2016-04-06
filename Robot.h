@@ -34,8 +34,8 @@
 #define POST_RAMP_Y_DOWN_B      21.500
 
 //Course C
-#define SUP_X_TARGET_C          28.3 //26.3  28.4
-#define X_TARGET_C              30.4
+#define SUP_X_TARGET_C          28.1 //26.3  28.4
+#define X_TARGET_C              30.2
 #define Y_TARGET_C              63.9
 
 #define SWITCH_X_C              6.0
@@ -46,7 +46,7 @@
 
 //Course D
 #define SUP_X_TARGET_D          28.3 //26.3  28.4
-#define X_TARGET_D              30.0
+#define X_TARGET_D              29.8
 #define Y_TARGET_D              64.1
 
 #define SWITCH_X_D              6.0

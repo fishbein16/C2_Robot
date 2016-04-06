@@ -536,7 +536,7 @@ int main(void)
     ///////Drop Off to Switches///////
     //////////////////////////////////
 
-    drive->BackwardsTurn(50, 40);
+    drive->BackwardsTurn(50, 30);
 
 //    while(RPS.X() < 0);
 
@@ -546,23 +546,23 @@ int main(void)
 
     Sleep(0.25);
 
+    //////////////////////////////////////
+    ///////Line up and Hit Switches///////
+    //////////////////////////////////////
+    //RPS Checks for posiiton to line up on the middle switch
     if(RPS.X() > switchX)
     {
         float x = RPS.X() - switchX;
         float target = x / cos((RPS.Heading() - 180) * PI / 180);
         drive->MoveForward(30);
-        drive->WaitForSetpointInch(target);
+        drive->WaitForSetpointInch(1+target);
         drive->Stop();
         Sleep(0.25);
         drive->ZeroTurnClockwise(RPS.Heading() - 270);
     }
-    //////////////////////////////////////
-    ///////Line up and Hit Switches///////
-    //////////////////////////////////////
 
-    //RPS Checks for posiiton to line up on the middle switch
     robot->FlipSwitches(RPS.RedSwitchDirection(), RPS.WhiteSwitchDirection(), RPS.BlueSwitchDirection());
-    //RPS Checks for posiiton to line up on the middle switch
+
 
     /////////////////////////////
     ///////To Final Button///////
@@ -752,36 +752,7 @@ int main(void)
 
     Sleep(0.25);
 
-    x = RPS.X();
-    y = RPS.Y();
-
-    angle = atan2(x, y);
-
-    if(RPS.Heading() < 270 - angle)
-    {
-        drive->ZeroTurnCounter(270 - angle - RPS.Heading());
-        Sleep(0.25);
-    }
-    else if(RPS.Heading() > 270 - angle)
-    {
-        drive->ZeroTurnClockwise(RPS.Heading() - (270 - angle));
-        Sleep(0.25);
-    }
-
-    if(RPS.Heading() < 270 - angle)
-    {
-        drive->ZeroTurnCounter(270 - angle - RPS.Heading());
-        Sleep(0.25);
-    }
-    else if(RPS.Heading() > 270 - angle)
-    {
-        drive->ZeroTurnClockwise(RPS.Heading() - (270 - angle));
-        Sleep(0.25);
-    }
-
-    hyp = sqrt(pow(x, 2) + pow(y, 2));
-
-    drive->MoveBackwards(70);
+    drive->BackwardsTurn(70,50);
 
     drive->WaitForSetpointInch(hyp);
 
