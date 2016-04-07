@@ -193,7 +193,7 @@ void Robot::FlipSwitches(int left, int middle, int right)
 
         buttonSwitch->ToRightSwitch();
         Sleep(0.5);
-        buttonSwitch->ArmPull();
+//        buttonSwitch->ArmPull();
 
         drive->MoveForward(30);
         drive->WaitForSetpointInch(1.0);

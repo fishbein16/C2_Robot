@@ -65,9 +65,9 @@ int main(void)
     ///////////////////////////////
     ///////Start to Supplies///////
     ///////////////////////////////
-    drive->MoveBackwards(50);
+    drive->MoveBackwards(70);
 
-    drive->WaitForSetpointInch(16.5); //12.5
+    drive->WaitForSetpointInch(12.5); //12.5
 
     drive->Stop();
 
@@ -351,13 +351,12 @@ int main(void)
     ///////Upper to Buttons///////
     //////////////////////////////
 
-    drive->LineFollowingBack();
-
-    //Check that it didn't just see the ramp
-    if(yTargetFuel - RPS.Y() > 20.0 || RPS.Y() < 0)
+    while(RPS.Y() < yTargetFuel - 8)
     {
-        drive->LineFollowingBack();
+        drive->MoveBackwards(50);
+        drive->WaitForSetpointInch(yTargetFuel - 8 - RPS.Y());
     }
+
     //RPS Checks and math. Fun....
     if(RPS.X() < xTargetFuel - 5/8.0 || RPS.X() > xTargetFuel)
     {
@@ -536,7 +535,7 @@ int main(void)
     ///////Drop Off to Switches///////
     //////////////////////////////////
 
-    drive->BackwardsTurn(50, 30);
+    drive->BackwardsTurn(50, 35);
 
 //    while(RPS.X() < 0);
 
@@ -567,6 +566,10 @@ int main(void)
     /////////////////////////////
     ///////To Final Button///////
     /////////////////////////////
+
+    drive->MoveForward(50);
+    drive->WaitForSetpointInch(1);
+    drive->Stop();
 
     Sleep(0.25);
 
@@ -607,9 +610,9 @@ int main(void)
         }
     }
 
-    drive->MoveBackwards(50);
+    drive->MoveBackwards(70);
 
-    drive->WaitForSetpointInch(xTargetFuel - RPS.X() + 0.5);
+    drive->WaitForSetpointInch(xTargetFuel - RPS.X() - 4);
 
     drive->Stop();
 
@@ -727,7 +730,7 @@ int main(void)
     float x = RPS.X();
     float y = RPS.Y();
 
-    angle = atan2(x, y) * 180 / PI;
+    angle = atan2(x, y) * 180 / PI + 10;
 
     drive->ZeroTurnCounter(180 - angle);
 

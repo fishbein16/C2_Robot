@@ -20,7 +20,7 @@
 #define NEUTRAL_BUTTON  35.0
 #define MID_SWITCH_PUSH 75.0
 #define MID_SWITCH_PULL 60.0
-#define LEFT_SWITCH     120.0
+#define LEFT_SWITCH     135.0
 #define RIGHT_SWITCH    10.0
 #define LEFT_MID_GAP    115.0
 #define RIGHT_MID_GAP   45.0

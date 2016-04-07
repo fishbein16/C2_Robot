@@ -138,9 +138,11 @@ void DriveSystem::LineFollowingFunc()
 
     float start = 0;
 
+    float timer = TimeNow();
+
     LineFollowing lastLineState = STATE_STRAIGHT;
 
-    while(!timeOut) //Change later for some sort of condition
+    while(!timeOut && TimeNow() - timer < 12) //Change later for some sort of condition
     {
         leftSeen = leftSensor->Value() < LEFT_THRESHOLD;
         rightSeen = rightSensor->Value() < RIGHT_THRESHOLD;
@@ -170,7 +172,14 @@ void DriveSystem::LineFollowingFunc()
         switch(lineState)
         {
         case STATE_STRAIGHT:
-            ForwardTurn(FULL_LEFT_PERCENT, FULL_RIGHT_PERCENT);
+            if(TimeNow() - timer < 10)
+            {
+                ForwardTurn(FULL_LEFT_PERCENT, FULL_RIGHT_PERCENT);
+            }
+            else
+            {
+                ForwardTurn(FULL_LEFT_PERCENT - 10, FULL_RIGHT_PERCENT);
+            }
             LCD.WriteLine("STATE_STRAIGHT");
             if(start != 0 && TimeNow() - start > 1.5)
             {

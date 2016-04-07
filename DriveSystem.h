@@ -7,7 +7,7 @@
 
 #include "Robot.h"
 
-#define LEFT_THRESHOLD              0.500
+#define LEFT_THRESHOLD              0.600
 #define MID_THRESHOLD               0.500
 #define RIGHT_THRESHOLD             0.500
 
