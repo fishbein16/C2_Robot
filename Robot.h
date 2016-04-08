@@ -16,7 +16,7 @@
 #define X_TARGET_A              30.0
 #define Y_TARGET_A              64.1
 
-#define SWITCH_X_A              6.0
+#define SWITCH_X_A              5.5
 #define SWITCH_Y_A              42.0
 
 #define FINAL_X_TARGET_A        3.4
@@ -46,10 +46,10 @@
 
 //Course D
 #define SUP_X_TARGET_D          28.3 //26.3  28.4
-#define X_TARGET_D              29.8
+#define X_TARGET_D              30.2
 #define Y_TARGET_D              64.1
 
-#define SWITCH_X_D              6.0
+#define SWITCH_X_D              5.5
 #define SWITCH_Y_D              42.0
 
 #define FINAL_X_TARGET_D        3.400

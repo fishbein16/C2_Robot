@@ -14,6 +14,25 @@ int main(void)
 {
     using namespace std;
 
+//    while(true)
+//    {
+//        AnalogInputPin left(FEHIO::P0_6);
+//        AnalogInputPin mid(FEHIO::P0_3);
+//        AnalogInputPin right(FEHIO::P0_0);
+
+//        LCD.Write("Left: ");
+//        LCD.WriteLine(left.Value());
+
+//        LCD.Write("Right: ");
+//        LCD.WriteLine(right.Value());
+
+//        LCD.Write("Middle: ");
+//        LCD.WriteLine(mid.Value());
+
+//        Sleep(0.5);
+
+//        LCD.Clear();
+//    }
     RPS.InitializeTouchMenu();
 
     float supXTarget, supYTarget, rampXMin, rampXMax, xTargetFuel, yTargetFuel, finalXTarget, postRampYDown, switchX, switchY;
@@ -287,7 +306,7 @@ int main(void)
 
         Sleep(0.25);
 
-        if(RPS.Heading() < 359.9 && RPS.Heading() > 330)
+        if(RPS.Heading() < 359.9 && RPS.Heading() > 180)
         {
             drive->ZeroTurnCounter(359.9 - RPS.Heading());
             Sleep(0.25);
@@ -326,7 +345,7 @@ int main(void)
 
     drive->MoveBackwards(50);
 
-    drive->WaitForSetpointInch(27);
+    drive->WaitForSetpointInch(23);
 
     drive->Stop();
 
@@ -366,10 +385,8 @@ int main(void)
 
         if(RPS.X() < 0)
         {
+            drive->MoveBackwards(30);
             while(RPS.X() < 0)
-            {
-                drive->MoveBackwards(30);
-            }
             drive->Stop();
         }
         if(RPS.Heading() < 359.9 && RPS.Heading() > 330)
@@ -446,11 +463,11 @@ int main(void)
 
     drive->MoveBackwards(30);
 
-    drive->WaitForSetpointInch(yTargetFuel - RPS.Y());
+    drive->WaitForSetpointInch(yTargetFuel - 0.5 - RPS.Y());
 
     drive->Stop();
 
-    while(RPS.Y() < yTargetFuel - 0.2 || RPS.Y() > yTargetFuel + 0.05)
+    while(RPS.Y() < yTargetFuel - 0.05 || RPS.Y() > yTargetFuel + 0.05)
     {
         if(RPS.Y() < yTargetFuel)
         {
@@ -537,29 +554,92 @@ int main(void)
 
     drive->BackwardsTurn(50, 35);
 
-//    while(RPS.X() < 0);
-
-    Sleep(2.5);
+//    Sleep(2.5);
+    drive->WaitForSetpointInch(12.5);
 
     drive->Stop();
 
     Sleep(0.25);
 
+    while(RPS.Heading() < 0)
+    {
+        drive->MoveBackwards(50);
+    }
+    drive->Stop();
+
+    drive->ZeroTurnCounter(90);
+
+    if(RPS.Heading() < 359.9 && RPS.Heading() > 180)
+    {
+        drive->ZeroTurnCounter(359.9 - RPS.Heading());
+        Sleep(0.25);
+    }
+    else if(RPS.Heading() > 0)
+    {
+        drive->ZeroTurnClockwise(RPS.Heading());
+        Sleep(0.25);
+    }
+
+    drive->MoveBackwards(50);
+
+    if(RPS.X() < switchX)
+    {
+        drive->MoveBackwards(50);
+        drive->WaitForSetpointInch(switchX - RPS.X());
+        drive->Stop();
+        Sleep(0.25);
+    }
+    else if(RPS.X() > switchX)
+    {
+        drive->MoveForward(50);
+        drive->WaitForSetpointInch(RPS.X() - switchX);
+        drive->Stop();
+        Sleep(0.25);
+    }
+
+    drive->ZeroTurnClockwise(90);
+
+    while(RPS.Y() < 0)
+    {
+        drive->BackwardsTurn(60, 35);
+        Sleep(0.25);
+        drive->Stop();
+        Sleep(0.25);
+    }
+
     //////////////////////////////////////
     ///////Line up and Hit Switches///////
     //////////////////////////////////////
     //RPS Checks for posiiton to line up on the middle switch
-    if(RPS.X() > switchX)
+//    if(RPS.X() > switchX)
+//    {
+//        float x = RPS.X() - switchX;
+//        float target = x / cos((RPS.Heading() - 180) * PI / 180);
+//        drive->MoveForward(30);
+//        drive->WaitForSetpointInch(1+target);
+//        drive->Stop();
+//        Sleep(0.25);
+//        drive->ZeroTurnClockwise(RPS.Heading() - 270);
+//    }
+
+    if(RPS.Heading() < 270)
     {
-        float x = RPS.X() - switchX;
-        float target = x / cos((RPS.Heading() - 180) * PI / 180);
-        drive->MoveForward(30);
-        drive->WaitForSetpointInch(1+target);
-        drive->Stop();
+        drive->ZeroTurnCounter(270 - RPS.Heading());
         Sleep(0.25);
+    }
+    else if(RPS.Heading() > 270)
+    {
         drive->ZeroTurnClockwise(RPS.Heading() - 270);
+        Sleep(0.25);
     }
 
+    while(RPS.Y() >= switchY + 1.0)
+    {
+        drive->MoveBackwards(50);
+        drive->WaitForSetpointInch(1);
+        drive->Stop();
+        Sleep(0.25);
+    }
     robot->FlipSwitches(RPS.RedSwitchDirection(), RPS.WhiteSwitchDirection(), RPS.BlueSwitchDirection());
 
 

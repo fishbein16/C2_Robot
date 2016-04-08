@@ -49,6 +49,7 @@ void Robot::FlipSwitches(int left, int middle, int right)
         buttonSwitch->ArmOut();
         Sleep(0.5);
         buttonSwitch->ToLeftSwitch();
+        Sleep(0.25);
 
         buttonSwitch->ArmPull();
 
@@ -69,21 +70,43 @@ void Robot::FlipSwitches(int left, int middle, int right)
         buttonSwitch->ToLeftMidGap();
         Sleep(0.5);
     }
+    drive->MoveForward(30);
+    drive->WaitForSetpointInch(1);
+    drive->Stop();
+    Sleep(0.25);
 
     if(middle == 1)
     {
         drive->MoveForward(30);
         if(againstWall)
         {
-            drive->WaitForSetpointInch(4.5);
+            drive->WaitForSetpointInch(3.5);
         }
         else
         {
-            drive->WaitForSetpointInch(4.5);
+            drive->WaitForSetpointInch(3.5);
         }
         drive->Stop();
         againstWall = false;
         Sleep(0.5);
+
+        if(RPS.Heading() < 0)
+        {
+            drive->MoveBackwards(30);
+            while(RPS.Heading() < 0)
+            drive->Stop();
+        }
+
+        if(RPS.Heading() < 270)
+        {
+            drive->ZeroTurnCounter(270 - RPS.Heading());
+            Sleep(0.25);
+        }
+        else if(RPS.Heading() > 270)
+        {
+            drive->ZeroTurnClockwise(RPS.Heading() - 270);
+            Sleep(0.25);
+        }
 
         buttonSwitch->ToMiddleSwitchPush();
         Sleep(0.5);
@@ -91,7 +114,7 @@ void Robot::FlipSwitches(int left, int middle, int right)
         Sleep(0.5);
 
         drive->MoveBackwards(30);
-        drive->WaitForSetpointInch(2.0);
+        drive->WaitForSetpointInch(4.0);
         drive->Stop();
         Sleep(0.5);
         buttonSwitch->ArmIn();
@@ -99,9 +122,9 @@ void Robot::FlipSwitches(int left, int middle, int right)
         buttonSwitch->ToRightMidGap();
         Sleep(0.5);
 
-        drive->MoveBackwards(30);
-        drive->WaitForSetpointInch(1.0);
-        drive->Stop();
+//        drive->MoveBackwards(30);
+//        drive->WaitForSetpointInch(1.0);
+//        drive->Stop();
     }
     else if(middle == 2)
     {
@@ -152,13 +175,13 @@ void Robot::FlipSwitches(int left, int middle, int right)
 
     Sleep(0.5);
 
-//    while(RPS.Heading() < 0)
-//    {
-//        drive->MoveBackwards(30);
-//        Sleep(0.05);
-//        drive->Stop();
-//        Sleep(0.05);
-//    }
+    while(RPS.Heading() < 0)
+    {
+        drive->MoveBackwards(30);
+        Sleep(0.05);
+        drive->Stop();
+        Sleep(0.05);
+    }
     if(RPS.Heading() < 270)
     {
         drive->ZeroTurnCounter(270 - RPS.Heading());
@@ -176,7 +199,7 @@ void Robot::FlipSwitches(int left, int middle, int right)
         Sleep(0.5);
 
         drive->MoveBackwards(30);
-        drive->WaitForSetpointInch(1.1);
+        drive->WaitForSetpointInch(2.0);
         drive->Stop();
         buttonSwitch->ArmOutMid();
         Sleep(0.5);
@@ -196,7 +219,7 @@ void Robot::FlipSwitches(int left, int middle, int right)
 //        buttonSwitch->ArmPull();
 
         drive->MoveForward(30);
-        drive->WaitForSetpointInch(1.0);
+        drive->WaitForSetpointInch(2.0);
         drive->Stop();
         Sleep(0.5);
         againstWall = false;
@@ -410,9 +433,9 @@ void Robot::SelectRPSRegionVariables(float *supXTarget, float *xTarget, float *y
         *switchY = SWITCH_Y_C;
         break;
     case 'D':
-        *supXTarget = SUP_X_TARGET_D;
-        *xTarget = X_TARGET_D;
-        *yTarget = Y_TARGET_D;
+        *supXTarget = SUP_X_TARGET_D - 0.2;
+        *xTarget = X_TARGET_D - 0.5;
+        *yTarget = Y_TARGET_D - 1; //subbed 0.5
         *finalXTarget = FINAL_X_TARGET_D;
         *postRampYDown = POST_RAMP_Y_DOWN_D;
         *switchX = SWITCH_X_D;

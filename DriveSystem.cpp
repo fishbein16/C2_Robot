@@ -142,7 +142,7 @@ void DriveSystem::LineFollowingFunc()
 
     LineFollowing lastLineState = STATE_STRAIGHT;
 
-    while(!timeOut && TimeNow() - timer < 12) //Change later for some sort of condition
+    while(!timeOut && TimeNow() - timer < 12)
     {
         leftSeen = leftSensor->Value() < LEFT_THRESHOLD;
         rightSeen = rightSensor->Value() < RIGHT_THRESHOLD;
