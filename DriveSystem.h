@@ -4,6 +4,7 @@
 #include <FEHMotor.h>
 #include <FEHIO.h>
 #include <FEHLCD.h>
+#include <FEHSD.h>
 
 #include "Robot.h"
 
@@ -38,8 +39,8 @@ public:
     void MoveBackwards(float percent);
     void ZeroTurnClockwise(float angle);
     void ZeroTurnCounter(float angle);
-    void ForwardTurn(float rightPercent, float leftPercent);
-    void BackwardsTurn(float rightPercent, float leftPercent);
+    void ForwardTurn(float leftPercent, float righttPercent);
+    void BackwardsTurn(float leftPercent, float righttPercent);
     void Stop();
     void LineFollowingFunc();
     void LineFollowingBack();

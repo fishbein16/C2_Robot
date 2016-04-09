@@ -144,6 +144,7 @@ void DriveSystem::LineFollowingFunc()
 
     while(!timeOut && TimeNow() - timer < 12)
     {
+        SD.Printf("Left: %.3f\nRight: %.3f\nMiddle: %.3f\n\n",leftSensor->Value(), rightSensor->Value(), middleSensor->Value());
         leftSeen = leftSensor->Value() < LEFT_THRESHOLD;
         rightSeen = rightSensor->Value() < RIGHT_THRESHOLD;
         midSeen = middleSensor->Value() < MID_THRESHOLD;

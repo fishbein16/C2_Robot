@@ -90,23 +90,23 @@ void Robot::FlipSwitches(int left, int middle, int right)
         againstWall = false;
         Sleep(0.5);
 
-        if(RPS.Heading() < 0)
-        {
-            drive->MoveBackwards(30);
-            while(RPS.Heading() < 0)
-            drive->Stop();
-        }
+//        if(RPS.Heading() < 0)
+//        {
+//            drive->MoveBackwards(30);
+//            while(RPS.Heading() < 0)
+//            drive->Stop();
+//        }
 
-        if(RPS.Heading() < 270)
-        {
-            drive->ZeroTurnCounter(270 - RPS.Heading());
-            Sleep(0.25);
-        }
-        else if(RPS.Heading() > 270)
-        {
-            drive->ZeroTurnClockwise(RPS.Heading() - 270);
-            Sleep(0.25);
-        }
+//        if(RPS.Heading() < 270)
+//        {
+//            drive->ZeroTurnCounter(270 - RPS.Heading());
+//            Sleep(0.25);
+//        }
+//        else if(RPS.Heading() > 270)
+//        {
+//            drive->ZeroTurnClockwise(RPS.Heading() - 270);
+//            Sleep(0.25);
+//        }
 
         buttonSwitch->ToMiddleSwitchPush();
         Sleep(0.5);
@@ -128,14 +128,14 @@ void Robot::FlipSwitches(int left, int middle, int right)
     }
     else if(middle == 2)
     {
-        if(!againstWall)
-        {
-            drive->MoveBackwards(30);
-            drive->WaitForSetpointInch(2.6);
-            drive->Stop();
-            againstWall = true;
-            Sleep(0.5);
-        }
+//        if(!againstWall)
+//        {
+//            drive->MoveBackwards(30);
+//            drive->WaitForSetpointInch(2.6);
+//            drive->Stop();
+//            againstWall = true;
+//            Sleep(0.5);
+//        }
         buttonSwitch->ArmFullIn();
         Sleep(0.5);
         buttonSwitch->ToMiddleSwitchPull();
@@ -237,7 +237,8 @@ void Robot::FlipSwitches(int left, int middle, int right)
     Sleep(0.5);
     buttonSwitch->ArmIn();
     Sleep(0.5);
-    buttonSwitch->NeutralButton();
+    buttonSwitch->ToLeftMidGap();
+    Sleep(0.25);
 }
 
 bool Robot::IsRed()

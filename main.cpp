@@ -3,6 +3,7 @@
 #include <FEHUtility.h>
 #include <FEHRPS.h>
 #include <cmath>
+#include <FEHSD.h>
 
 #include "DriveSystem.h"
 #include "Robot.h"
@@ -14,28 +15,9 @@ int main(void)
 {
     using namespace std;
 
-//    while(true)
-//    {
-//        AnalogInputPin left(FEHIO::P0_6);
-//        AnalogInputPin mid(FEHIO::P0_3);
-//        AnalogInputPin right(FEHIO::P0_0);
-
-//        LCD.Write("Left: ");
-//        LCD.WriteLine(left.Value());
-
-//        LCD.Write("Right: ");
-//        LCD.WriteLine(right.Value());
-
-//        LCD.Write("Middle: ");
-//        LCD.WriteLine(mid.Value());
-
-//        Sleep(0.5);
-
-//        LCD.Clear();
-//    }
     RPS.InitializeTouchMenu();
 
-    float supXTarget, supYTarget, rampXMin, rampXMax, xTargetFuel, yTargetFuel, finalXTarget, postRampYDown, switchX, switchY;
+    float supXTarget, supYTarget, xTargetFuel, yTargetFuel, finalXTarget, postRampYDown, switchX, switchY;
 
     robot->SelectRPSRegionVariables(&supXTarget, &xTargetFuel, &yTargetFuel, &finalXTarget, &postRampYDown, &switchX, &switchY);
 
@@ -47,37 +29,6 @@ int main(void)
     while(TimeNow() - start < 1.0);
 
     buttonSwitch->NeutralButton();
-
-//    int count = 0;
-//    while(count < 5)
-//    {
-//        if(button.RightPressed())
-//        {
-//            switch(count)
-//            {
-//            case 0:
-//                supXTarget = RPS.X();
-//                supYTarget = RPS.Y();
-//                break;
-//            case 1:
-//                rampXMin = RPS.X();
-//                break;
-//            case 2:
-//                rampXMax = RPS.X();
-//                break;
-//            case 3:
-//                xTargetFuel = RPS.X();
-//                yTargetFuel = RPS.Y();
-//                break;
-//            case 4:
-//                postRampYDown = RPS.Y();
-//                finalXTarget = RPS.X();
-//                break;
-//            }
-//            count++;
-//            while(button.RightPressed());
-//        }
-//    }
 
     while(!robot->Start());
 
@@ -162,7 +113,7 @@ int main(void)
 
     drive->MoveForward(50);
 
-    drive->WaitForSetpointInch(RPS.Y() - /*supYTarget*/11.5 - 6);
+    drive->WaitForSetpointInch(RPS.Y() - 11.5 - 6);
 
     drive->Stop();
 
@@ -177,7 +128,7 @@ int main(void)
     }
     else
     {
-        angle = atan2(RPS.Y() - /*supYTarget*/11.5, supXTarget - RPS.X());
+        angle = atan2(RPS.Y() - 11.5, supXTarget - RPS.X());
         angle = 90 + angle;
     }
 
@@ -199,13 +150,12 @@ int main(void)
 
     drive->MoveForward(50);
 
-    drive->WaitForSetpointInch(RPS.Y() - /*supYTarget*/11.5);
+    drive->WaitForSetpointInch(RPS.Y() - 11.5);
 
     drive->Stop();
 
     Sleep(0.25);
     //Correction and mechanism here
-    //Correct to (28.7, 11.5)
 
     drive->ZeroTurnClockwise(10);
 
@@ -214,6 +164,8 @@ int main(void)
     drive->MoveForward(30);
 
     drive->WaitForSetpointInch(RPS.Y() - 11.5);
+
+    Sleep(0.25);
 
     supplyArm->ToPickUp();
 
@@ -254,7 +206,7 @@ int main(void)
         Sleep(0.25);
     }
 
-    if(RPS.X() < /*rampXMin*/xTargetFuel - 1.6)
+    if(RPS.X() < xTargetFuel - 1.6)
     {
         drive->ZeroTurnClockwise(RPS.Heading());
 
@@ -275,7 +227,7 @@ int main(void)
 
         drive->MoveBackwards(30);
 
-        drive->WaitForSetpointInch(/*(rampXMin + rampXMax) / 2*/xTargetFuel - RPS.X());
+        drive->WaitForSetpointInch(xTargetFuel - RPS.X());
 
         drive->Stop();
 
@@ -298,7 +250,7 @@ int main(void)
             Sleep(0.25);
         }
     }
-    else if(RPS.X() > /*rampXMax*/xTargetFuel)
+    else if(RPS.X() > xTargetFuel)
     {
         drive->ZeroTurnClockwise(RPS.Heading());
 
@@ -319,7 +271,7 @@ int main(void)
 
         drive->MoveForward(30);
 
-        drive->WaitForSetpointInch(RPS.X() - /*(rampXMin + rampXMax) / 2*/xTargetFuel);
+        drive->WaitForSetpointInch(RPS.X() - xTargetFuel);
 
         drive->Stop();
 
@@ -345,21 +297,26 @@ int main(void)
 
     drive->MoveBackwards(50);
 
-    drive->WaitForSetpointInch(23);
+    drive->WaitForSetpointInch(25);
 
     drive->Stop();
 
     Sleep(0.25);
 
-    if(RPS.Heading() < 90)
+    start = TimeNow();
+
+    while((RPS.Heading() < 90 - 1 || RPS.Heading() > 90 + 1) && TimeNow() - start < 2.0)
     {
-        drive->ZeroTurnCounter(90 - RPS.Heading());
-        Sleep(0.25);
-    }
-    else if(RPS.Heading() > 90)
-    {
-        drive->ZeroTurnClockwise(RPS.Heading() - 90);
-        Sleep(0.25);
+        if(RPS.Heading() < 90)
+        {
+            drive->ZeroTurnCounter(90 - RPS.Heading());
+            Sleep(0.25);
+        }
+        else if(RPS.Heading() > 90)
+        {
+            drive->ZeroTurnClockwise(RPS.Heading() - 90);
+            Sleep(0.25);
+        }
     }
 
     buttonSwitch->ArmInMid();
@@ -536,7 +493,11 @@ int main(void)
     ///////Buttons to Drop Off///////
     /////////////////////////////////
 
+    SD.OpenLog();
+
     drive->LineFollowingFunc();
+
+    SD.CloseLog();
 
     Sleep(0.25);
 
@@ -650,6 +611,8 @@ int main(void)
     drive->MoveForward(50);
     drive->WaitForSetpointInch(1);
     drive->Stop();
+
+    buttonSwitch->NeutralButton();
 
     Sleep(0.25);
 
@@ -829,7 +792,7 @@ int main(void)
     y = RPS.Y();
     float hyp = sqrt(pow(x, 2) + pow(y, 2));
 
-    drive->MoveBackwards(70);
+    drive->BackwardsTurn(80, 70);
 
     drive->WaitForSetpointInch(hyp / 2);
 
