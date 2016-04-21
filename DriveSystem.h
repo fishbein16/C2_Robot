@@ -43,6 +43,7 @@ public:
     void BackwardsTurn(float leftPercent, float righttPercent);
     void Stop();
     void LineFollowingFunc();
+    void LineFollwoingBack();
 
 private:
     FEHMotor* leftDrive;
