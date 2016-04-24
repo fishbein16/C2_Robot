@@ -89,25 +89,7 @@ void Robot::FlipSwitches(int left, int middle, int right)
         drive->Stop();
         againstWall = false;
         Sleep(0.5);
-
-//        if(RPS.Heading() < 0)
-//        {
-//            drive->MoveBackwards(30);
-//            while(RPS.Heading() < 0)
-//            drive->Stop();
-//        }
-
-//        if(RPS.Heading() < 270)
-//        {
-//            drive->ZeroTurnCounter(270 - RPS.Heading());
-//            Sleep(0.25);
-//        }
-//        else if(RPS.Heading() > 270)
-//        {
-//            drive->ZeroTurnClockwise(RPS.Heading() - 270);
-//            Sleep(0.25);
-//        }
-
+        
         buttonSwitch->ToMiddleSwitchPush();
         Sleep(0.5);
         buttonSwitch->ArmOutMid();
@@ -122,20 +104,9 @@ void Robot::FlipSwitches(int left, int middle, int right)
         buttonSwitch->ToRightMidGap();
         Sleep(0.5);
 
-//        drive->MoveBackwards(30);
-//        drive->WaitForSetpointInch(1.0);
-//        drive->Stop();
     }
     else if(middle == 2)
     {
-//        if(!againstWall)
-//        {
-//            drive->MoveBackwards(30);
-//            drive->WaitForSetpointInch(2.6);
-//            drive->Stop();
-//            againstWall = true;
-//            Sleep(0.5);
-//        }
         buttonSwitch->ArmFullIn();
         Sleep(0.5);
         buttonSwitch->ToMiddleSwitchPull();
@@ -156,20 +127,6 @@ void Robot::FlipSwitches(int left, int middle, int right)
         drive->WaitForSetpointInch(0.3);
         drive->Stop();
     }
-
-//    if(againstWall)
-//    {
-//        drive->MoveForward(30);
-//        drive->WaitForSetpointInch(1.0);
-//        drive->Stop();
-//        againstWall = false;
-//    }
-//    else if(!againstWall)
-//    {
-//        drive->MoveForward(30);
-//        drive->WaitForSetpointInch(0.3);
-//        drive->Stop();
-//    }
 
     buttonSwitch->ArmOut();
 
@@ -216,7 +173,6 @@ void Robot::FlipSwitches(int left, int middle, int right)
 
         buttonSwitch->ToRightSwitch();
         Sleep(0.5);
-//        buttonSwitch->ArmPull();
 
         drive->MoveForward(30);
         drive->WaitForSetpointInch(2.0);
